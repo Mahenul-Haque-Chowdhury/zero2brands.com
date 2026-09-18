@@ -40,7 +40,7 @@ the relevant account) can do — the code side is already built or stubbed.
 - Bunny.net: Stream Video Library (Asia-only replication, 1440p/2160p disabled), Token Authentication key, allowed referrers, dev + prod libraries.
 - bKash Merchant application (Tokenized Checkout / PGW) — start immediately, 2-4 week lead time. Ask about IP whitelisting and SNS IPN availability in the first conversation. Request sandbox credentials separately/immediately.
 - Decide + provision the bKash IP-whitelisting fix (ask bKash to waive it, or stand up the DigitalOcean fixed-IP proxy) — see QUESTIONS_FOR_OWNER.md.
-- Resend: verify domain, DNS records (SPF/DKIM/DMARC) grey-clouded in Cloudflare, API key, wire into Supabase Auth SMTP.
+- Resend: verify domain, DNS records (SPF/DKIM/DMARC) grey-clouded in Cloudflare, API key, wire into Supabase Auth SMTP. **Status: SPF and DKIM are verified, DMARC is still MISSING** (see the email deliverability section below).
 - SMS gateway signup (Alpha Net / MIM SMS / BulkSMSBD / REVE SMS), masked sender ID application. **Required for OTP login to actually send codes** — until `SMS_API_URL`/`SMS_API_KEY` are set, OTP requests are logged to `sms_log` as `skipped_not_configured` and no SMS goes out (the request still "succeeds" from the caller's perspective, per the anti-enumeration design, but no code arrives).
 - Zoom Server-to-Server OAuth app + credentials. Decision already defaulted (see QUESTIONS_FOR_OWNER.md): manual paste of Zoom links for launch.
 - Meta Business Manager, dataset + CAPI access token, domain verification, Facebook Page + Instagram.
@@ -126,3 +126,37 @@ Week one: watch Sentry daily (once wired — see Phase 0.13), watch `/admin/repo
 Week two onward: review the abuse watchlist at `/admin/reports/watchlist` (surfaces `audit_log` rows the nightly cron writes), the moderation queue at `/admin/reports`, Search Console coverage, Meta Event Match Quality, and confirm the store request pipeline (`/admin/store-requests`) is being worked.
 
 (This file will keep growing as later phases add owner-only steps — payment go-live switches, content loading, DNS cutover, etc. See also QUESTIONS_FOR_OWNER.md for decisions that were defaulted and may need your review.)
+
+## Email deliverability (open issue)
+
+Confirmed 2026-09-19 while debugging a store request notification that never
+arrived at `contact@grayvally.tech`.
+
+**What happened:** the app worked correctly. Resend accepted the message and
+reported `last_event: "delivered"`, meaning Zoho (which hosts grayvally.tech
+mail) accepted it. It was almost certainly filtered to spam on arrival, not
+lost. The confirmation sent to a Gmail address in the same submission arrived
+normally.
+
+**Why:** `zero2brands.com` has SPF and DKIM verified in Resend, but **no
+DMARC record exists** (`_dmarc.zero2brands.com` returns NXDOMAIN). A
+first-time cross-domain sender with no DMARC policy is a standard spam-folder
+trigger, especially for Zoho and Microsoft-hosted inboxes.
+
+- [ ] Add a DMARC TXT record in Cloudflare at `_dmarc.zero2brands.com`, DNS
+      only (grey cloud). Start permissive and tighten after two clean weeks,
+      exactly as the build plan specifies:
+      `v=DMARC1; p=none; rua=mailto:dmarc@zero2brands.com`
+      then move to `p=quarantine`.
+- [ ] Mark `noreply@zero2brands.com` as "not spam" / add it to the allowlist
+      in the Zoho mailbox for `contact@grayvally.tech`, so existing filtered
+      mail is trusted going forward.
+- [ ] Optional: verify deliverability end to end with mail-tester.com once
+      DMARC is live.
+
+**Separate local-dev caveat:** `NEXT_PUBLIC_SITE_URL` is `http://localhost:3000`
+in `.env.local`, and 12 email templates embed it in their call-to-action
+links. Any email sent while testing locally therefore contains dead
+`localhost` links. This is not a production defect (setting the production
+value in Vercel is already listed under launch config above), but do not be
+confused by it when testing emails from your own machine.
