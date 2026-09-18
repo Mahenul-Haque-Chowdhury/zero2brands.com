@@ -42,11 +42,25 @@ the relevant account) can do — the code side is already built or stubbed.
 
 ## Phase 2 (database)
 
-- You will need to create the actual Supabase project (see Phase 0) before `supabase db push` can run. Once the project exists:
+- The full migration set (`0001_schema.sql`, `0002_rls_policies.sql`,
+  `0003_indexes.sql`) plus `supabase/seed.sql` was validated against a real
+  local Postgres instance via `supabase start` (Docker) in this session —
+  not just written, actually applied and exercised. All 5 of the plan's own
+  guard/check queries pass (RLS on every table, search_path pinned on every
+  SECURITY DEFINER function, the three gated views run with owner rights,
+  privileged profile columns are unwritable by `authenticated`, and only
+  `coupons`/`bkash_tokens` are the intentional deny-all tables). Access
+  functions (`has_course_access`, `is_enrolled_student`, `public_profiles`
+  view gating) were also spot-tested with the seeded users and behaved
+  correctly (paid user sees the directory, unpaid user sees nothing).
+  `src/types/database.ts` was generated from this locally-validated schema,
+  so it is real, not hand-written.
+- You still need to create the actual Supabase **project** (see Phase 0) to
+  get a production/staging database. Once it exists:
   1. `supabase link --project-ref <ref>`
-  2. `supabase db push` to apply `0001_schema.sql` then `0002_rls_policies.sql` in order.
-  3. Run the verification queries at the bottom of `0002_rls_policies.sql` (GUARD 1, GUARD 2, CHECK 3-5) and the manual penetration checks.
-  4. Regenerate types: `npm run db:types` (needs `SUPABASE_PROJECT_ID` env var set locally, or run the `supabase gen types` command directly with your project ref).
-  5. Load `supabase/seed.sql` for local/dev testing data.
+  2. `supabase db push` to apply the three migrations in order against the real project.
+  3. Re-run the verification queries at the bottom of `0002_rls_policies.sql` (GUARD 1, GUARD 2, CHECK 3-5) and the manual penetration checks against that project too — a fresh confirmation costs nothing.
+  4. Regenerate types against the real project: `npx supabase gen types typescript --project-id <ref> --schema public > src/types/database.ts` (the `db:types` script expects `SUPABASE_PROJECT_ID` set).
+  5. Do NOT run `supabase/seed.sql` against production — it creates fake auth users with a shared test password. It's for local/dev only (`supabase db reset` runs it automatically).
 
 (This file will keep growing as later phases add owner-only steps — payment go-live switches, content loading, DNS cutover, etc. See also QUESTIONS_FOR_OWNER.md for decisions that were defaulted and may need your review.)
