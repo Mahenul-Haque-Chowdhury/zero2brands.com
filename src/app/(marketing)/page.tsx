@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const PILLARS = [
   {
     icon: PlayCircle,
-    title: "A real curriculum",
+    title: "A real roadmap",
     body: "Step-by-step video lessons covering sourcing, costing, branding and launch, not vague motivation.",
   },
   {
@@ -69,7 +69,7 @@ export default async function HomePage() {
           </h1>
           <p className="mt-6 max-w-xl text-balance text-lg text-white/75">
             {course?.subtitle ??
-              "A practical, step-by-step course and community for entrepreneurs starting a clothing business in Bangladesh. Lifetime access, real curriculum, real community."}
+              "A real roadmap and a real community for entrepreneurs starting a clothing business in Bangladesh. Lifetime access, step by step."}
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <Button
@@ -170,7 +170,7 @@ export default async function HomePage() {
             Ready to start building?
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-white/70">
-            Get the full curriculum, the community and lifetime access in one
+            Get the full roadmap, the community and lifetime access in one
             purchase.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">

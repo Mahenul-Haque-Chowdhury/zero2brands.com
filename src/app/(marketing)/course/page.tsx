@@ -151,7 +151,7 @@ export default async function CourseSalesPage() {
         ) : null}
 
         <section className="mt-16 sm:mt-20">
-          <h2 className="mb-6 text-2xl font-semibold">Full curriculum</h2>
+          <h2 className="mb-6 text-2xl font-semibold">Full roadmap</h2>
           <Accordion multiple={false} className="rounded-xl border border-border">
             {[...modulesByTitle.entries()].map(([key, lessons]) => {
               const moduleTitle = key.split(":").slice(1).join(":");
