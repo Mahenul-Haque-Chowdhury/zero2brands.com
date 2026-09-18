@@ -154,6 +154,27 @@
     @apply font-heading;
     letter-spacing: -0.01em;
   }
+
+  /* Tailwind v4 dropped the preflight rule that gave buttons a pointer
+     cursor, so every button in the app inherited `cursor: default` and
+     nothing felt clickable. Restoring it here fixes every button at once,
+     including plain <button> elements and future ones, rather than
+     needing `cursor-pointer` on each call site.
+
+     Disabled controls keep `not-allowed`, and the `:disabled` rule is
+     placed second so it wins over the pointer rule above it. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  label[for],
+  summary {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [role="button"][aria-disabled="true"],
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
 }
 
 @keyframes brand-float {
