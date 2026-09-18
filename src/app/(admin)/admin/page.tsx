@@ -1,6 +1,7 @@
 import { requireStaff } from "@/lib/auth/guards";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { startOfToday as getStartOfToday, daysAgo, minutesAgo } from "@/lib/utils/dates";
+import { TrendingUp, AlertTriangle } from "lucide-react";
 
 export const metadata = { title: "Admin overview" };
 
@@ -76,17 +77,39 @@ export default async function AdminOverviewPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-semibold">Overview</h1>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="mb-6">
+        <h1 className="font-sans text-xl font-semibold">Overview</h1>
+        <p className="text-sm text-muted-foreground">
+          Key numbers across revenue, enrollments, and pending work.
+        </p>
+      </div>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.label} className={stat.alert ? "border-destructive" : undefined}>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-xs font-normal text-muted-foreground">
+          <Card
+            key={stat.label}
+            size="sm"
+            className={
+              stat.alert
+                ? "ring-1 ring-destructive/30 bg-destructive/5"
+                : undefined
+            }
+          >
+            <CardHeader className="pb-1">
+              <CardTitle className="flex items-center justify-between font-sans text-xs font-medium text-muted-foreground">
                 {stat.label}
+                {stat.alert ? (
+                  <AlertTriangle className="size-3.5 text-destructive" />
+                ) : (
+                  <TrendingUp className="size-3.5 text-muted-foreground/50" />
+                )}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className={`text-2xl font-semibold ${stat.alert ? "text-destructive" : ""}`}>
+              <p
+                className={`text-xl font-semibold tabular-nums ${
+                  stat.alert ? "text-destructive" : "text-foreground"
+                }`}
+              >
                 {stat.value}
               </p>
             </CardContent>
