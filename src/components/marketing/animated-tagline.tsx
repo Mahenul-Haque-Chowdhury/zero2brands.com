@@ -24,9 +24,18 @@ const DISPLAY_MS = 3200;
 
 /**
  * Loops the hero tagline between English and Bangla with a crossfade.
- * Pure CSS opacity transition, no animation library, so it stays light on
- * mid-range Android. Respects prefers-reduced-motion by holding on the
- * first line and skipping the timer entirely.
+ *
+ * Both lines are stacked in the same absolutely-positioned box at all
+ * times (only opacity toggles) so the box never resizes between an
+ * English one-liner and a Bangla two-liner — that resize was shifting
+ * the whole hero section's height and causing a visible overlap/jump
+ * during the transition. The wrapper's height is set by an invisible
+ * "sizer" copy of whichever line is currently tallest, so the hero
+ * section's height stays fixed too.
+ *
+ * Pure CSS opacity transition, no animation library, so it stays light
+ * on mid-range Android. Respects prefers-reduced-motion by holding on
+ * the first line and skipping the timer entirely.
  */
 export function AnimatedTagline({ className }: { className?: string }) {
   const [index, setIndex] = useState(0);
@@ -50,21 +59,44 @@ export function AnimatedTagline({ className }: { className?: string }) {
     return () => clearInterval(interval);
   }, []);
 
-  const current = LINES[index];
-
   return (
-    <span
-      className={className}
-      lang={current.lang}
-      style={{
-        display: "inline-block",
-        opacity: visible ? 1 : 0,
-        transition: "opacity 350ms ease",
-        fontFamily: current.fontFamily,
-        fontSize: current.fontSize,
-      }}
-    >
-      {current.text}
+    <span className={className} style={{ position: "relative", display: "block" }}>
+      {/* Invisible sizers: both lines rendered in normal flow, stacked, so
+          the box is always as tall as the taller of the two (the Bangla
+          two-liner). This reserves the space; nothing here is seen. */}
+      <span aria-hidden style={{ visibility: "hidden" }}>
+        {LINES.map((line) => (
+          <span
+            key={line.lang}
+            style={{
+              display: "block",
+              fontFamily: line.fontFamily,
+              fontSize: line.fontSize,
+            }}
+          >
+            {line.text}
+          </span>
+        ))}
+      </span>
+
+      {/* The actual visible, animated lines, absolutely positioned over
+          the sizer above so layout never shifts between them. */}
+      {LINES.map((line, i) => (
+        <span
+          key={line.lang}
+          lang={line.lang}
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: i === index && visible ? 1 : 0,
+            transition: "opacity 350ms ease",
+            fontFamily: line.fontFamily,
+            fontSize: line.fontSize,
+          }}
+        >
+          {line.text}
+        </span>
+      ))}
     </span>
   );
 }
