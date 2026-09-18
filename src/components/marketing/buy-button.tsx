@@ -59,9 +59,9 @@ export function BuyButton({
       size="lg"
       onClick={handleClick}
       disabled={pending}
-      className={fullWidth ? "w-full" : undefined}
+      className={`h-12 bg-accent px-8 text-base font-medium text-accent-foreground hover:bg-accent/90 ${fullWidth ? "w-full" : ""}`}
     >
-      {pending ? "Starting checkout…" : "Enroll now with bKash"}
+      {pending ? "Starting checkout..." : "Enroll now with bKash"}
     </Button>
   );
 }

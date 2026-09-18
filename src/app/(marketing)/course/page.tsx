@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { CheckCircle2 } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Button } from "@/components/ui/button";
 import {
@@ -89,32 +90,40 @@ export default async function CourseSalesPage() {
           },
         }}
       />
-      <div className="mx-auto max-w-4xl px-4 py-16">
-        <div className="text-center">
-          <h1 className="text-3xl font-semibold sm:text-4xl">{course.title}</h1>
-          <p className="mt-4 text-lg text-muted-foreground">{course.subtitle}</p>
-          <div className="mt-6 flex items-center justify-center gap-3">
-            <span className="text-2xl font-semibold">
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-brand-hero">
+        <div className="bg-brand-dots absolute inset-0" />
+        <div className="relative mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:py-24">
+          <h1 className="text-balance text-3xl font-semibold text-white sm:text-4xl">
+            {course.title}
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-lg text-white/75">
+            {course.subtitle}
+          </p>
+          <div className="mt-7 flex items-center justify-center gap-3">
+            <span className="text-3xl font-semibold text-white">
               ৳{course.price_bdt.toLocaleString()}
             </span>
             {course.compare_at_price_bdt ? (
-              <span className="text-lg text-muted-foreground line-through">
+              <span className="text-lg text-white/50 line-through">
                 ৳{course.compare_at_price_bdt.toLocaleString()}
               </span>
             ) : null}
           </div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            One-time payment · lifetime access
+          <p className="mt-1 text-sm text-white/60">
+            One-time payment, lifetime access
           </p>
           {product ? (
-            <div className="mt-6">
+            <div className="mt-7 flex justify-center">
               <BuyButton productId={product.id} />
             </div>
           ) : null}
         </div>
+      </section>
 
+      <div className="mx-auto max-w-4xl px-4 pb-16 sm:px-6">
         {course.trailer_video_id ? (
-          <div className="mt-12 aspect-video overflow-hidden rounded-lg bg-black">
+          <div className="mt-12 aspect-video overflow-hidden rounded-xl border border-border bg-black shadow-sm">
             <iframe
               src={`https://iframe.mediadelivery.net/embed/${process.env.BUNNY_STREAM_LIBRARY_ID}/${course.trailer_video_id}`}
               className="h-full w-full"
@@ -125,22 +134,25 @@ export default async function CourseSalesPage() {
         ) : null}
 
         {outcomes.length > 0 ? (
-          <section className="mt-16">
-            <h2 className="mb-4 text-2xl font-semibold">What you&apos;ll learn</h2>
-            <ul className="grid gap-2 sm:grid-cols-2">
+          <section className="mt-16 sm:mt-20">
+            <h2 className="mb-6 text-2xl font-semibold">What you&apos;ll learn</h2>
+            <ul className="grid gap-3 sm:grid-cols-2">
               {outcomes.map((o, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm">
-                  <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                  {String(o)}
+                <li
+                  key={i}
+                  className="flex items-start gap-3 rounded-lg border border-border bg-card p-4 text-sm"
+                >
+                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-accent" />
+                  <span>{String(o)}</span>
                 </li>
               ))}
             </ul>
           </section>
         ) : null}
 
-        <section className="mt-16">
-          <h2 className="mb-4 text-2xl font-semibold">Full curriculum</h2>
-          <Accordion multiple={false}>
+        <section className="mt-16 sm:mt-20">
+          <h2 className="mb-6 text-2xl font-semibold">Full curriculum</h2>
+          <Accordion multiple={false} className="rounded-xl border border-border">
             {[...modulesByTitle.entries()].map(([key, lessons]) => {
               const moduleTitle = key.split(":").slice(1).join(":");
               const totalMinutes = Math.round(
@@ -148,20 +160,30 @@ export default async function CourseSalesPage() {
               );
               return (
                 <AccordionItem key={key} value={key}>
-                  <AccordionTrigger>
-                    {moduleTitle}{" "}
-                    <span className="ml-2 text-xs text-muted-foreground">
-                      {lessons?.length} lessons · {totalMinutes} min
+                  <AccordionTrigger className="px-4">
+                    <span className="flex flex-1 flex-wrap items-baseline justify-between gap-x-3 gap-y-1 pr-2 text-left">
+                      <span className="font-medium">{moduleTitle}</span>
+                      <span className="text-xs font-normal text-muted-foreground">
+                        {lessons?.length} lessons &middot; {totalMinutes} min
+                      </span>
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent>
+                  <AccordionContent className="px-4">
                     <ul className="flex flex-col gap-1">
                       {(lessons ?? []).map((l) => (
-                        <li key={l.id} className="flex items-center justify-between text-sm">
+                        <li
+                          key={l.id}
+                          className="flex items-center justify-between gap-3 border-t border-border/60 py-2 text-sm first:border-t-0"
+                        >
                           <span>
-                            {l.title} {l.is_preview ? "(free preview)" : ""}
+                            {l.title}{" "}
+                            {l.is_preview ? (
+                              <span className="ml-1 text-xs font-medium text-accent">
+                                Free preview
+                              </span>
+                            ) : null}
                           </span>
-                          <span className="text-xs text-muted-foreground">
+                          <span className="shrink-0 text-xs text-muted-foreground">
                             {Math.round((l.duration_seconds ?? 0) / 60)} min
                           </span>
                         </li>
@@ -174,42 +196,54 @@ export default async function CourseSalesPage() {
           </Accordion>
         </section>
 
-        <section className="mt-16 rounded-lg border p-6">
-          <h2 className="mb-2 text-xl font-semibold">What&apos;s included</h2>
-          <ul className="flex flex-col gap-1 text-sm text-muted-foreground">
-            <li>Lifetime access to every lesson — no expiry, no subscription</li>
-            <li>A community of other students building the same thing</li>
-            <li>Downloadable resources: costing sheets, supplier lists, templates</li>
-            <li>A certificate on completion</li>
+        <section className="mt-16 rounded-xl border border-border bg-muted/40 p-6 sm:mt-20 sm:p-8">
+          <h2 className="mb-4 text-xl font-semibold">What&apos;s included</h2>
+          <ul className="flex flex-col gap-3 text-sm text-muted-foreground">
+            {[
+              "Lifetime access to every lesson, no expiry, no subscription",
+              "A community of other students building the same thing",
+              "Downloadable resources: costing sheets, supplier lists, templates",
+              "A certificate on completion",
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2.5">
+                <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-accent" />
+                <span>{item}</span>
+              </li>
+            ))}
           </ul>
         </section>
 
         {faqs && faqs.length > 0 ? (
-          <section className="mt-16">
-            <h2 className="mb-4 text-2xl font-semibold">FAQ</h2>
-            <Accordion multiple={false}>
+          <section className="mt-16 sm:mt-20">
+            <h2 className="mb-6 text-2xl font-semibold">FAQ</h2>
+            <Accordion multiple={false} className="rounded-xl border border-border">
               {faqs.map((f, i) => (
                 <AccordionItem key={i} value={`faq-${i}`}>
-                  <AccordionTrigger>{f.question}</AccordionTrigger>
-                  <AccordionContent>{f.answer}</AccordionContent>
+                  <AccordionTrigger className="px-4">{f.question}</AccordionTrigger>
+                  <AccordionContent className="px-4">{f.answer}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
           </section>
         ) : null}
 
-        <div className="mt-16 text-center">
-          {product ? (
-            <BuyButton productId={product.id} />
-          ) : (
-            <Button size="lg" render={<Link href="/contact">Get in touch</Link>} />
-          )}
+        <div className="mt-16 text-center sm:mt-20">
+          <h2 className="text-balance text-2xl font-semibold">
+            Ready to build your brand?
+          </h2>
+          <div className="mt-6">
+            {product ? (
+              <BuyButton productId={product.id} />
+            ) : (
+              <Button size="lg" render={<Link href="/contact">Get in touch</Link>} />
+            )}
+          </div>
         </div>
       </div>
 
       {/* Sticky mobile buy bar */}
       {product ? (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t bg-background p-3 md:hidden">
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 backdrop-blur-sm md:hidden">
           <BuyButton productId={product.id} fullWidth />
         </div>
       ) : null}

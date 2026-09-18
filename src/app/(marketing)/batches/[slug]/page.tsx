@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { CalendarClock, Users2 } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { BuyButton } from "@/components/marketing/buy-button";
 import { Badge } from "@/components/ui/badge";
@@ -40,14 +41,14 @@ export default async function BatchDetailPage({
   else if (now > closesAt) state = "closed";
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-16">
-      <h1 className="text-3xl font-semibold">{batch.title}</h1>
-      <p className="mt-2 text-muted-foreground">{batch.description}</p>
+    <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+      <h1 className="text-3xl font-semibold sm:text-4xl">{batch.title}</h1>
+      <p className="mt-3 text-muted-foreground">{batch.description}</p>
 
-      <div className="mt-6 flex items-center gap-3">
-        <span className="text-2xl font-semibold">৳{batch.price_bdt.toLocaleString()}</span>
+      <div className="mt-8 flex items-center gap-3">
+        <span className="text-3xl font-semibold">৳{batch.price_bdt.toLocaleString()}</span>
         {batch.compare_at_price_bdt ? (
-          <span className="text-muted-foreground line-through">
+          <span className="text-lg text-muted-foreground line-through">
             ৳{batch.compare_at_price_bdt.toLocaleString()}
           </span>
         ) : null}
@@ -59,25 +60,36 @@ export default async function BatchDetailPage({
         </p>
       ) : null}
 
-      <p className="mt-2 text-sm text-muted-foreground">{batch.schedule_note}</p>
-
-      <div className="mt-4">
-        <Badge variant={seatsLeft > 0 ? "default" : "destructive"}>
-          {seatsLeft > 0 ? `${seatsLeft} of ${batch.seat_limit} seats left` : "Full"}
-        </Badge>
+      <div className="mt-6 flex flex-col gap-3 rounded-xl border border-border bg-muted/30 p-5 text-sm">
+        {batch.schedule_note ? (
+          <p className="flex items-start gap-2 text-foreground">
+            <CalendarClock className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+            {batch.schedule_note}
+          </p>
+        ) : null}
+        <p className="flex items-center gap-2">
+          <Users2 className="size-4 shrink-0 text-muted-foreground" />
+          <Badge variant={seatsLeft > 0 ? "default" : "destructive"}>
+            {seatsLeft > 0 ? `${seatsLeft} of ${batch.seat_limit} seats left` : "Full"}
+          </Badge>
+        </p>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-10">
         {state === "open" && product ? (
           <BuyButton productId={product.id} />
         ) : state === "not_open" ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="rounded-lg border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
             Enrollment opens {new Date(batch.enrollment_opens_at!).toLocaleDateString()}.
           </p>
         ) : state === "full" ? (
-          <p className="text-sm text-muted-foreground">This batch is full.</p>
+          <p className="rounded-lg border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
+            This batch is full. Check the batches page for other open cohorts.
+          </p>
         ) : (
-          <p className="text-sm text-muted-foreground">Enrollment has closed.</p>
+          <p className="rounded-lg border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
+            Enrollment has closed for this batch.
+          </p>
         )}
       </div>
     </div>
