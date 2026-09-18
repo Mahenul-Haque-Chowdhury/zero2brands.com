@@ -4,11 +4,16 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { FileVideo } from "lucide-react";
+import {
+  Th,
+  TableSurface,
+  EmptyState,
+  PageHeading,
+} from "@/components/admin/data-table";
 
 export const metadata = { title: "Lessons" };
 
@@ -23,30 +28,19 @@ export default async function AdminLessonsPage() {
 
   return (
     <div>
-      <div className="mb-5">
-        <h1 className="font-sans text-xl font-semibold">Lessons</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Video uploads use the TUS resumable flow (api/admin/videos/create-upload)
-          directly to Bunny. A lesson cannot publish until encoding finishes.
-        </p>
-      </div>
+      <PageHeading
+        title="Lessons"
+        description="Video uploads use the TUS resumable flow (api/admin/videos/create-upload) directly to Bunny. A lesson cannot publish until encoding finishes."
+      />
 
-      <div className="overflow-x-auto rounded-lg border border-border bg-card">
+      <TableSurface>
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Title
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Type
-              </TableHead>
-              <TableHead className="text-right text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Duration
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Status
-              </TableHead>
+              <Th>Title</Th>
+              <Th>Type</Th>
+              <Th align="right">Duration</Th>
+              <Th>Status</Th>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -76,16 +70,17 @@ export default async function AdminLessonsPage() {
             {rows.length === 0 && (
               <TableRow className="hover:bg-transparent">
                 <TableCell colSpan={4} className="p-0">
-                  <div className="flex flex-col items-center gap-2 py-12 text-center">
-                    <FileVideo className="size-8 text-muted-foreground/40" />
-                    <p className="text-sm font-medium">No lessons yet</p>
-                  </div>
+                  <EmptyState
+                    icon={FileVideo}
+                    title="No lessons yet"
+                    hint="Lessons appear here once a module has content."
+                  />
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </div>
+      </TableSurface>
     </div>
   );
 }

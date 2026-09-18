@@ -64,9 +64,11 @@ export default async function AdminStudentDetailPage({
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="font-sans text-xl font-semibold">{student.full_name}</h1>
-          <p className="text-sm text-muted-foreground">
+        <div className="min-w-0">
+          <h1 className="font-sans text-xl font-semibold tracking-tight">
+            {student.full_name}
+          </h1>
+          <p className="mt-0.5 truncate text-sm text-muted-foreground">
             {student.email} &middot; {student.phone}
           </p>
         </div>

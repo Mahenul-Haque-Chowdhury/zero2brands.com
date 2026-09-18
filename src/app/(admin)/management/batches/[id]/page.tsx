@@ -33,9 +33,14 @@ export default async function AdminBatchDetailPage({
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h1 className="font-sans text-xl font-semibold">{batch.title}</h1>
-        <p className="text-sm text-muted-foreground">
-          {batch.seats_taken}/{batch.seat_limit} seats &middot; {batch.status}
+        <h1 className="font-sans text-xl font-semibold tracking-tight">
+          {batch.title}
+        </h1>
+        <p className="mt-0.5 text-sm text-muted-foreground">
+          <span className="tabular-nums">
+            {batch.seats_taken}/{batch.seat_limit}
+          </span>{" "}
+          seats &middot; <span className="capitalize">{batch.status}</span>
         </p>
       </div>
 

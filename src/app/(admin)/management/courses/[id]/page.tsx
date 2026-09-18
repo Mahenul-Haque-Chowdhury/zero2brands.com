@@ -26,8 +26,10 @@ export default async function AdminCourseDetailPage({
 
   return (
     <div>
-      <div className="mb-6 flex items-center gap-3">
-        <h1 className="font-sans text-xl font-semibold">{course.title}</h1>
+      <div className="mb-6 flex flex-wrap items-center gap-3">
+        <h1 className="font-sans text-xl font-semibold tracking-tight">
+          {course.title}
+        </h1>
         <Badge
           variant="outline"
           className={

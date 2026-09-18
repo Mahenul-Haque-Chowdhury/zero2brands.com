@@ -5,11 +5,16 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Users2 } from "lucide-react";
+import {
+  Th,
+  TableSurface,
+  EmptyState,
+  PageHeading,
+} from "@/components/admin/data-table";
 
 export const metadata = { title: "Batches" };
 
@@ -53,29 +58,19 @@ export default async function AdminBatchesPage() {
 
   return (
     <div>
-      <div className="mb-5">
-        <h1 className="font-sans text-xl font-semibold">Batches</h1>
-        <p className="text-sm text-muted-foreground">
-          {rows.length} batch{rows.length === 1 ? "" : "es"} total.
-        </p>
-      </div>
+      <PageHeading
+        title="Batches"
+        description={`${rows.length} batch${rows.length === 1 ? "" : "es"} total.`}
+      />
 
-      <div className="overflow-x-auto rounded-lg border border-border bg-card">
+      <TableSurface>
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Title
-              </TableHead>
-              <TableHead className="text-right text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Seats
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Starts
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Status
-              </TableHead>
+              <Th>Title</Th>
+              <Th align="right">Seats</Th>
+              <Th>Starts</Th>
+              <Th>Status</Th>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -101,16 +96,17 @@ export default async function AdminBatchesPage() {
             {rows.length === 0 && (
               <TableRow className="hover:bg-transparent">
                 <TableCell colSpan={4} className="p-0">
-                  <div className="flex flex-col items-center gap-2 py-12 text-center">
-                    <Users2 className="size-8 text-muted-foreground/40" />
-                    <p className="text-sm font-medium">No batches yet</p>
-                  </div>
+                  <EmptyState
+                    icon={Users2}
+                    title="No batches yet"
+                    hint="Create a batch to start scheduling live sessions."
+                  />
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </div>
+      </TableSurface>
     </div>
   );
 }

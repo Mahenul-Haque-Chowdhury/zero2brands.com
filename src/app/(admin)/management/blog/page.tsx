@@ -4,11 +4,16 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Newspaper } from "lucide-react";
+import {
+  Th,
+  TableSurface,
+  EmptyState,
+  PageHeading,
+} from "@/components/admin/data-table";
 
 export const metadata = { title: "Blog" };
 
@@ -23,23 +28,17 @@ export default async function AdminBlogPage() {
 
   return (
     <div>
-      <div className="mb-5">
-        <h1 className="font-sans text-xl font-semibold">Blog</h1>
-        <p className="text-sm text-muted-foreground">
-          {rows.length} post{rows.length === 1 ? "" : "s"} in the CMS.
-        </p>
-      </div>
+      <PageHeading
+        title="Blog"
+        description={`${rows.length} post${rows.length === 1 ? "" : "s"} in the CMS.`}
+      />
 
-      <div className="overflow-x-auto rounded-lg border border-border bg-card">
+      <TableSurface>
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Title
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Status
-              </TableHead>
+              <Th>Title</Th>
+              <Th>Status</Th>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -65,16 +64,17 @@ export default async function AdminBlogPage() {
             {rows.length === 0 && (
               <TableRow className="hover:bg-transparent">
                 <TableCell colSpan={2} className="p-0">
-                  <div className="flex flex-col items-center gap-2 py-12 text-center">
-                    <Newspaper className="size-8 text-muted-foreground/40" />
-                    <p className="text-sm font-medium">No posts yet</p>
-                  </div>
+                  <EmptyState
+                    icon={Newspaper}
+                    title="No posts yet"
+                    hint="Drafts and published articles appear here."
+                  />
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </div>
+      </TableSurface>
     </div>
   );
 }

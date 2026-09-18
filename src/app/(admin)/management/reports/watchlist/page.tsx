@@ -3,11 +3,16 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { ShieldCheck } from "lucide-react";
+import {
+  Th,
+  TableSurface,
+  EmptyState,
+  PageHeading,
+} from "@/components/admin/data-table";
 
 export const metadata = { title: "Abuse watchlist" };
 
@@ -31,27 +36,18 @@ export default async function AbuseWatchlistPage() {
 
   return (
     <div>
-      <div className="mb-5">
-        <h1 className="font-sans text-xl font-semibold">Abuse watchlist</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Flagged by the nightly abuse-detection job. Nothing here is
-          auto-banned, review each case before taking action.
-        </p>
-      </div>
+      <PageHeading
+        title="Abuse watchlist"
+        description="Flagged by the nightly abuse-detection job. Nothing here is auto-banned, review each case before taking action."
+      />
 
-      <div className="overflow-x-auto rounded-lg border border-border bg-card">
+      <TableSurface>
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                User ID
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Reasons
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Flagged
-              </TableHead>
+              <Th>User ID</Th>
+              <Th>Reasons</Th>
+              <Th>Flagged</Th>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -83,19 +79,17 @@ export default async function AbuseWatchlistPage() {
             {rows.length === 0 && (
               <TableRow className="hover:bg-transparent">
                 <TableCell colSpan={3} className="p-0">
-                  <div className="flex flex-col items-center gap-2 py-12 text-center">
-                    <ShieldCheck className="size-8 text-muted-foreground/40" />
-                    <p className="text-sm font-medium">Nothing flagged</p>
-                    <p className="text-xs text-muted-foreground">
-                      The nightly job has not raised anything for review.
-                    </p>
-                  </div>
+                  <EmptyState
+                    icon={ShieldCheck}
+                    title="Nothing flagged"
+                    hint="The nightly job has not raised anything for review."
+                  />
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </div>
+      </TableSurface>
     </div>
   );
 }

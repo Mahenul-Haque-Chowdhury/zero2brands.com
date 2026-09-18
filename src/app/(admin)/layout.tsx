@@ -17,6 +17,7 @@ import { requireStaff } from "@/lib/auth/guards";
 import { logoutAction } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Wordmark } from "@/components/shared/wordmark";
+import { AdminNavLink } from "@/components/admin/admin-nav-link";
 
 const NAV_ITEMS = [
   { href: "/management", label: "Overview", icon: LayoutDashboard },
@@ -51,23 +52,18 @@ export default async function AdminLayout({
           <Wordmark size="sm" tagline="Admin" />
         </Link>
         <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-2">
-          {NAV_ITEMS.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-[0.8125rem] font-medium text-sidebar-foreground/75 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
-              >
-                <Icon className="size-3.5 shrink-0" />
-                {item.label}
-              </Link>
-            );
-          })}
+          {NAV_ITEMS.map((item) => (
+            <AdminNavLink
+              key={item.href}
+              href={item.href}
+              label={item.label}
+              icon={item.icon}
+            />
+          ))}
         </nav>
       </aside>
       <div className="flex flex-1 flex-col overflow-x-hidden">
-        <header className="flex h-14 items-center justify-between border-b border-border bg-background px-4">
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/80">
           <span className="text-xs text-muted-foreground">
             <span className="font-medium text-foreground">
               {profile?.full_name}

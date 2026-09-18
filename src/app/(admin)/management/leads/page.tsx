@@ -3,11 +3,16 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { UserPlus } from "lucide-react";
+import {
+  Th,
+  TableSurface,
+  EmptyState,
+  PageHeading,
+} from "@/components/admin/data-table";
 
 export const metadata = { title: "Leads" };
 
@@ -23,29 +28,19 @@ export default async function AdminLeadsPage() {
 
   return (
     <div>
-      <div className="mb-5">
-        <h1 className="font-sans text-xl font-semibold">Leads</h1>
-        <p className="text-sm text-muted-foreground">
-          Latest 100 leads captured across marketing forms.
-        </p>
-      </div>
+      <PageHeading
+        title="Leads"
+        description="Latest 100 leads captured across marketing forms."
+      />
 
-      <div className="overflow-x-auto rounded-lg border border-border bg-card">
+      <TableSurface>
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Name
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Phone
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Source
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Date
-              </TableHead>
+              <Th>Name</Th>
+              <Th>Phone</Th>
+              <Th>Source</Th>
+              <Th>Date</Th>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -64,16 +59,17 @@ export default async function AdminLeadsPage() {
             {rows.length === 0 && (
               <TableRow className="hover:bg-transparent">
                 <TableCell colSpan={4} className="p-0">
-                  <div className="flex flex-col items-center gap-2 py-12 text-center">
-                    <UserPlus className="size-8 text-muted-foreground/40" />
-                    <p className="text-sm font-medium">No leads yet</p>
-                  </div>
+                  <EmptyState
+                    icon={UserPlus}
+                    title="No leads yet"
+                    hint="Marketing form submissions will collect here."
+                  />
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </div>
+      </TableSurface>
     </div>
   );
 }

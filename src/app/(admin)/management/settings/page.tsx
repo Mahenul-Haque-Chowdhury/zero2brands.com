@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/auth/guards";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Settings2 } from "lucide-react";
+import { PageHeading } from "@/components/admin/data-table";
 
 export const metadata = { title: "Settings" };
 
@@ -12,12 +13,10 @@ export default async function AdminSettingsPage() {
 
   return (
     <div>
-      <div className="mb-5">
-        <h1 className="font-sans text-xl font-semibold">Site settings</h1>
-        <p className="text-sm text-muted-foreground">
-          Raw configuration stored in site_settings.
-        </p>
-      </div>
+      <PageHeading
+        title="Site settings"
+        description="Raw configuration stored in site_settings."
+      />
 
       {rows.length > 0 ? (
         <div className="grid gap-3">

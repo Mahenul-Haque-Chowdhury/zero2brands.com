@@ -3,13 +3,18 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Receipt } from "lucide-react";
 import { ManualPaymentDialog } from "./manual-payment-dialog";
+import {
+  Th,
+  TableSurface,
+  EmptyState,
+  PageHeading,
+} from "@/components/admin/data-table";
 
 export const metadata = { title: "Payments" };
 
@@ -53,38 +58,22 @@ export default async function AdminPaymentsPage() {
 
   return (
     <div>
-      <div className="mb-5 flex items-center justify-between gap-3">
-        <div>
-          <h1 className="font-sans text-xl font-semibold">Payments</h1>
-          <p className="text-sm text-muted-foreground">
-            Latest 100 transactions across bKash and manual entries.
-          </p>
-        </div>
-        <ManualPaymentDialog />
-      </div>
+      <PageHeading
+        title="Payments"
+        description="Latest 100 transactions across bKash and manual entries."
+        action={<ManualPaymentDialog />}
+      />
 
-      <div className="overflow-x-auto rounded-lg border border-border bg-card">
+      <TableSurface>
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Invoice
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Student
-              </TableHead>
-              <TableHead className="text-right text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Amount
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Gateway
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Status
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Date
-              </TableHead>
+              <Th>Invoice</Th>
+              <Th>Student</Th>
+              <Th align="right">Amount</Th>
+              <Th>Gateway</Th>
+              <Th>Status</Th>
+              <Th>Date</Th>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -114,19 +103,17 @@ export default async function AdminPaymentsPage() {
             {rows.length === 0 && (
               <TableRow className="hover:bg-transparent">
                 <TableCell colSpan={6} className="p-0">
-                  <div className="flex flex-col items-center gap-2 py-12 text-center">
-                    <Receipt className="size-8 text-muted-foreground/40" />
-                    <p className="text-sm font-medium">No payments yet</p>
-                    <p className="text-xs text-muted-foreground">
-                      Transactions will show up here once students start paying.
-                    </p>
-                  </div>
+                  <EmptyState
+                    icon={Receipt}
+                    title="No payments yet"
+                    hint="Transactions will show up here once students start paying."
+                  />
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </div>
+      </TableSurface>
     </div>
   );
 }

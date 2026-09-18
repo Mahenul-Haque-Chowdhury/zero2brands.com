@@ -6,11 +6,11 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { CheckCircle2, ShieldAlert } from "lucide-react";
+import { Th } from "@/components/admin/data-table";
 
 export const metadata = { title: "Reports" };
 
@@ -36,14 +36,16 @@ export default async function AdminReportsPage() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-sans text-xl font-semibold">Reports</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="font-sans text-xl font-semibold tracking-tight">
+            Reports
+          </h1>
+          <p className="mt-0.5 text-sm text-muted-foreground">
             Payment reconciliation and moderation, at a glance.
           </p>
         </div>
         <Link
           href="/management/reports/watchlist"
-          className="text-sm font-medium text-primary hover:underline"
+          className="shrink-0 text-sm font-medium text-primary transition-colors duration-150 hover:underline"
         >
           Abuse watchlist
         </Link>
@@ -61,15 +63,9 @@ export default async function AdminReportsPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
-                    <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                      Invoice
-                    </TableHead>
-                    <TableHead className="text-right text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                      Amount
-                    </TableHead>
-                    <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                      Created
-                    </TableHead>
+                    <Th>Invoice</Th>
+                    <Th align="right">Amount</Th>
+                    <Th>Created</Th>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -108,12 +104,8 @@ export default async function AdminReportsPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
-                    <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                      Reason
-                    </TableHead>
-                    <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                      Reported
-                    </TableHead>
+                    <Th>Reason</Th>
+                    <Th>Reported</Th>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

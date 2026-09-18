@@ -5,12 +5,17 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Search, Users } from "lucide-react";
+import {
+  Th,
+  TableSurface,
+  EmptyState,
+  PageHeading,
+} from "@/components/admin/data-table";
 
 export const metadata = { title: "Students" };
 
@@ -37,40 +42,30 @@ export default async function AdminStudentsPage({
 
   return (
     <div>
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="font-sans text-xl font-semibold">Students</h1>
-          <p className="text-sm text-muted-foreground">
-            {rows.length} shown, most recently joined first.
-          </p>
-        </div>
-        <form className="relative w-full sm:w-64">
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            name="q"
-            defaultValue={q}
-            placeholder="Search name or email..."
-            className="pl-8"
-          />
-        </form>
-      </div>
+      <PageHeading
+        title="Students"
+        description={`${rows.length} shown, most recently joined first.`}
+        action={
+          <form className="relative w-full sm:w-64">
+            <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              name="q"
+              defaultValue={q}
+              placeholder="Search name or email..."
+              className="pl-8"
+            />
+          </form>
+        }
+      />
 
-      <div className="overflow-x-auto rounded-lg border border-border bg-card">
+      <TableSurface>
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Name
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Email
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                District
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Status
-              </TableHead>
+              <Th>Name</Th>
+              <Th>Email</Th>
+              <Th>District</Th>
+              <Th>Status</Th>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -104,19 +99,21 @@ export default async function AdminStudentsPage({
             {rows.length === 0 && (
               <TableRow className="hover:bg-transparent">
                 <TableCell colSpan={4} className="p-0">
-                  <div className="flex flex-col items-center gap-2 py-12 text-center">
-                    <Users className="size-8 text-muted-foreground/40" />
-                    <p className="text-sm font-medium">No students found</p>
-                    <p className="text-xs text-muted-foreground">
-                      {q ? "Try a different search." : "Students will appear here once they sign up."}
-                    </p>
-                  </div>
+                  <EmptyState
+                    icon={Users}
+                    title="No students found"
+                    hint={
+                      q
+                        ? "Try a different search."
+                        : "Students will appear here once they sign up."
+                    }
+                  />
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </div>
+      </TableSurface>
     </div>
   );
 }

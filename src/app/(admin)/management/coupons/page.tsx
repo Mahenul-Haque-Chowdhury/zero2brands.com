@@ -5,11 +5,16 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Tag } from "lucide-react";
+import {
+  Th,
+  TableSurface,
+  EmptyState,
+  PageHeading,
+} from "@/components/admin/data-table";
 
 export const metadata = { title: "Coupons" };
 
@@ -29,29 +34,19 @@ export default async function AdminCouponsPage() {
 
   return (
     <div>
-      <div className="mb-5">
-        <h1 className="font-sans text-xl font-semibold">Coupons</h1>
-        <p className="text-sm text-muted-foreground">
-          {rows.length} coupon{rows.length === 1 ? "" : "s"} configured.
-        </p>
-      </div>
+      <PageHeading
+        title="Coupons"
+        description={`${rows.length} coupon${rows.length === 1 ? "" : "s"} configured.`}
+      />
 
-      <div className="overflow-x-auto rounded-lg border border-border bg-card">
+      <TableSurface>
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Code
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Discount
-              </TableHead>
-              <TableHead className="text-right text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Uses
-              </TableHead>
-              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Status
-              </TableHead>
+              <Th>Code</Th>
+              <Th>Discount</Th>
+              <Th align="right">Uses</Th>
+              <Th>Status</Th>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -84,16 +79,17 @@ export default async function AdminCouponsPage() {
             {rows.length === 0 && (
               <TableRow className="hover:bg-transparent">
                 <TableCell colSpan={4} className="p-0">
-                  <div className="flex flex-col items-center gap-2 py-12 text-center">
-                    <Tag className="size-8 text-muted-foreground/40" />
-                    <p className="text-sm font-medium">No coupons yet</p>
-                  </div>
+                  <EmptyState
+                    icon={Tag}
+                    title="No coupons yet"
+                    hint="Discount codes you create will be listed here."
+                  />
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </div>
+      </TableSurface>
     </div>
   );
 }
