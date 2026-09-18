@@ -31,7 +31,7 @@ const COLUMNS = [
 export function SiteFooter() {
   return (
     <footer className="bg-primary">
-      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <div className="mx-auto max-w-360 px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-10 sm:grid-cols-4">
           <div className="col-span-2 sm:col-span-1">
             <Link href="/" className="flex items-center" aria-label="Zero2Brands home">

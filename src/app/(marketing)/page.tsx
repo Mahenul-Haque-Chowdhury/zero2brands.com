@@ -60,7 +60,7 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-brand-hero">
         <div className="bg-brand-dots absolute inset-0" />
-        <div className="relative mx-auto flex max-w-5xl flex-col items-center px-4 py-20 text-center sm:px-6 sm:py-28 lg:py-32">
+        <div className="relative mx-auto flex max-w-360 flex-col items-center px-4 py-20 text-center sm:px-6 sm:py-28 lg:py-32 lg:px-8">
           <span className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium tracking-wide text-white/80 uppercase">
             For Bangladeshi entrepreneurs
           </span>
@@ -99,7 +99,7 @@ export default async function HomePage() {
       </section>
 
       {/* Pillars */}
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+      <section className="mx-auto max-w-360 px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-2xl font-semibold sm:text-3xl">
             Why entrepreneurs choose Zero2Brands
@@ -126,7 +126,7 @@ export default async function HomePage() {
       {/* Testimonials */}
       {testimonials && testimonials.length > 0 ? (
         <section className="bg-muted/60 py-16 sm:py-20 lg:py-24">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="text-2xl font-semibold sm:text-3xl">
                 What students say
