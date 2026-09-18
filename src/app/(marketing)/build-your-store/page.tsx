@@ -9,7 +9,6 @@ import {
   Search,
   ShieldCheck,
   Smartphone,
-  Truck,
   Wallet,
 } from "lucide-react";
 import { LeadForm } from "@/components/marketing/lead-form";
@@ -53,44 +52,6 @@ const SERVICES = [
     icon: MessageCircle,
     title: "Maintenance and support",
     body: "Bug fixing, hosting, SSL and technical support once you are live, so a broken checkout is never your problem alone.",
-  },
-];
-
-/** Figures published on grayvally.tech. */
-const STATS = [
-  { value: "25+", label: "Clients and partners" },
-  { value: "50+", label: "Projects delivered" },
-  { value: "10+", label: "Years combined experience" },
-];
-
-/** Client names listed publicly on grayvally.tech. */
-const CLIENTS = [
-  "Menz Look",
-  "CourseLogistics",
-  "Vephyr",
-  "Crystal Valley",
-  "Dainik New Times",
-  "ZTec Group",
-  "Scan2Call",
-  "Buildify",
-  "Intovah",
-];
-
-const PROCESS = [
-  {
-    step: "01",
-    title: "Discovery and alignment",
-    body: "Before anything is built, we agree on what the store has to do and who it is for.",
-  },
-  {
-    step: "02",
-    title: "Milestone-based build",
-    body: "Weekly updates, clear milestones, and no hidden surprises. You see visible progress checkpoints, not a black box.",
-  },
-  {
-    step: "03",
-    title: "Launch and hand over",
-    body: "Production-ready testing, then the store goes live with you in control of it.",
   },
 ];
 
@@ -138,18 +99,6 @@ export default function BuildYourStorePage() {
                   <ArrowUpRight className="size-4" />
                 </a>
               </Reveal>
-
-              {/* Stats */}
-              <RevealGroup className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-3">
-                {STATS.map((s) => (
-                  <RevealItem key={s.label} className="bg-[#0b1f35] px-5 py-5">
-                    <p className="text-2xl font-semibold tabular-nums text-accent sm:text-3xl">
-                      {s.value}
-                    </p>
-                    <p className="mt-1 text-sm text-white/60">{s.label}</p>
-                  </RevealItem>
-                ))}
-              </RevealGroup>
             </div>
 
             {/* Right: form and contact */}
@@ -221,122 +170,6 @@ export default function BuildYourStorePage() {
             </RevealItem>
           ))}
         </RevealGroup>
-      </section>
-
-      {/* Featured case study: Menz Look */}
-      <section className="border-y border-border bg-muted/40 py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-          <Reveal className="max-w-2xl">
-            <span className="text-xs font-semibold uppercase tracking-wide text-accent">
-              Case study
-            </span>
-            <h2 className="mt-3 text-balance text-2xl font-semibold sm:text-3xl">
-              Menz Look, a clothing brand selling online
-            </h2>
-            <p className="mt-3 text-muted-foreground">
-              The closest thing to what you are building: a menswear
-              storefront made for the Bangladeshi market.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.1}>
-            <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-3">
-              {[
-                {
-                  label: "What it is",
-                  value:
-                    "A budget-friendly menswear storefront, built mobile-first for how customers actually shop.",
-                },
-                {
-                  label: "Built with",
-                  value:
-                    "Next.js, Framer Motion and Supabase. The same stack this site runs on.",
-                },
-                {
-                  label: "Timeline",
-                  value:
-                    "4 to 6 weeks from kickoff to a live, order-taking store.",
-                },
-              ].map((c) => (
-                <div key={c.label} className="bg-card p-6">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    {c.label}
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed text-foreground">
-                    {c.value}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.16}>
-            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-accent/20 bg-accent/5 px-5 py-4">
-              <Truck className="size-4 shrink-0 text-accent" />
-              <p className="text-sm text-foreground">
-                Fast cash-on-delivery checkout, WhatsApp-driven support, and
-                no third-party platform fees eating the margin.
-              </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Clients */}
-      <section className="mx-auto max-w-360 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <Reveal className="text-center">
-          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Teams that have worked with GrayVally
-          </p>
-        </Reveal>
-        <RevealGroup className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-3">
-          {CLIENTS.map((c) => (
-            <RevealItem key={c}>
-              <span className="inline-flex rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground transition-colors duration-300 hover:border-accent/40 hover:text-foreground">
-                {c}
-              </span>
-            </RevealItem>
-          ))}
-        </RevealGroup>
-        <Reveal delay={0.12}>
-          <p className="mx-auto mt-6 max-w-lg text-center text-xs text-muted-foreground">
-            Many GrayVally engagements are confidential under client NDAs, so
-            this is only the publicly named work.
-          </p>
-        </Reveal>
-      </section>
-
-      {/* Process */}
-      <section className="relative overflow-hidden bg-brand-hero py-16 sm:py-20 lg:py-24">
-        <div className="bg-brand-dots absolute inset-0" />
-        <div className="relative mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-          <Reveal className="max-w-2xl">
-            <span className="text-xs font-semibold uppercase tracking-wide text-accent">
-              How it works
-            </span>
-            <h2 className="mt-3 text-balance text-2xl font-semibold text-white sm:text-3xl">
-              Discovery first, then a build you can watch happen
-            </h2>
-          </Reveal>
-
-          <RevealGroup className="mt-10 grid gap-6 sm:grid-cols-3">
-            {PROCESS.map((p) => (
-              <RevealItem key={p.step}>
-                <div className="h-full rounded-2xl border border-white/10 bg-white/5 p-6 transition-colors duration-300 hover:border-accent/30">
-                  <span className="font-mono text-sm font-semibold text-accent">
-                    {p.step}
-                  </span>
-                  <h3 className="mt-3 text-lg font-semibold text-white">
-                    {p.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-white/65">
-                    {p.body}
-                  </p>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </div>
       </section>
 
     </>
