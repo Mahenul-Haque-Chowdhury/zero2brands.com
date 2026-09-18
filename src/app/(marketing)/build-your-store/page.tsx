@@ -99,9 +99,32 @@ export default function BuildYourStorePage() {
                   <ArrowUpRight className="size-4" />
                 </a>
               </Reveal>
+
+              <Reveal delay={0.32}>
+                <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-8 text-sm">
+                  <a
+                    href="mailto:contact@grayvally.tech"
+                    className="flex w-fit items-center gap-3 text-white/70 transition-colors hover:text-white"
+                  >
+                    <Mail className="size-4 shrink-0 text-accent" />
+                    contact@grayvally.tech
+                  </a>
+                  <a
+                    href="tel:+8801608613747"
+                    className="flex w-fit items-center gap-3 text-white/70 transition-colors hover:text-white"
+                  >
+                    <Phone className="size-4 shrink-0 text-accent" />
+                    +880 1608-613747
+                  </a>
+                  <p className="flex items-start gap-3 text-white/70">
+                    <MapPin className="mt-0.5 size-4 shrink-0 text-accent" />
+                    House 629-630, Road 5, Block G, Bashundhara RA, Dhaka 1229
+                  </p>
+                </div>
+              </Reveal>
             </div>
 
-            {/* Right: form and contact */}
+            {/* Right: form */}
             <Reveal delay={0.12} className="scroll-mt-24">
               <div className="rounded-2xl bg-card p-6 shadow-2xl ring-1 ring-black/5 sm:p-8">
                 <h2 className="text-xl font-semibold text-foreground">
@@ -114,30 +137,6 @@ export default function BuildYourStorePage() {
                 <div className="mt-6">
                   <LeadForm source="build_your_store" />
                 </div>
-              </div>
-
-              {/* Sits directly under the white card, so it stays on the navy
-                  surface but is indented to read as part of the same column
-                  rather than a second competing panel. */}
-              <div className="mt-6 flex flex-col gap-3 px-1 text-sm sm:px-2">
-                <a
-                  href="mailto:contact@grayvally.tech"
-                  className="flex items-center gap-3 text-white/70 transition-colors hover:text-white"
-                >
-                  <Mail className="size-4 shrink-0 text-accent" />
-                  contact@grayvally.tech
-                </a>
-                <a
-                  href="tel:+8801608613747"
-                  className="flex items-center gap-3 text-white/70 transition-colors hover:text-white"
-                >
-                  <Phone className="size-4 shrink-0 text-accent" />
-                  +880 1608-613747
-                </a>
-                <p className="flex items-start gap-3 text-white/70">
-                  <MapPin className="mt-0.5 size-4 shrink-0 text-accent" />
-                  House 629-630, Road 5, Block G, Bashundhara RA, Dhaka 1229
-                </p>
               </div>
             </Reveal>
           </div>
