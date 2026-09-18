@@ -35,6 +35,7 @@ export function GoogleSignInButton({ next }: { next?: string }) {
     <Button
       type="button"
       variant="outline"
+      size="lg"
       className="w-full"
       disabled={pending}
       onClick={() => startTransition(() => signInWithGoogleAction(next))}

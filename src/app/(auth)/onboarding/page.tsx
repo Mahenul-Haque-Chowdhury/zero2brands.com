@@ -6,7 +6,6 @@ import { completeOnboardingAction } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -31,98 +30,99 @@ export default function OnboardingPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="text-2xl font-semibold tracking-tight text-primary">
           A few more details
         </h1>
         <p className="mt-1.5 text-sm text-muted-foreground">
           We need your phone number to run your enrollment and support.
         </p>
       </div>
-      <Card>
-        <CardContent className="pt-6">
-          <form action={formAction} className="flex flex-col gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="phone">Phone number</Label>
-              <Input
-                id="phone"
-                name="phone"
-                type="tel"
-                placeholder="01XXXXXXXXX"
-                required
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="district">District</Label>
-              <Select
-                value={district}
-                onValueChange={(v) => setDistrict(v ?? "")}
-              >
-                <SelectTrigger id="district" className="w-full">
-                  <SelectValue placeholder="Select your district" />
-                </SelectTrigger>
-                <SelectContent>
-                  {DISTRICTS.map((d) => (
-                    <SelectItem key={d} value={d}>
-                      {d}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <input type="hidden" name="district" value={district} required />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="businessName">
-                Business name{" "}
-                <span className="text-muted-foreground">(optional)</span>
-              </Label>
-              <Input id="businessName" name="businessName" />
-            </div>
-            <div className="grid gap-2">
-              <Label>Who can see your profile?</Label>
-              <Select
-                value={visibility}
-                onValueChange={(v) => setVisibility(v ?? "students_only")}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="students_only">
-                    Other students only
-                  </SelectItem>
-                  <SelectItem value="public">
-                    Public (anyone visiting the site)
-                  </SelectItem>
-                  <SelectItem value="private">
-                    Private (hidden from the directory)
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <input type="hidden" name="visibility" value={visibility} />
-              <p className="text-xs text-muted-foreground">
-                Other enrolled students may see your name, district and
-                business name depending on this setting. You can change it
-                anytime in Settings.
-              </p>
-            </div>
-            {state && "error" in state ? (
-              <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
-                {state.error}
-              </p>
-            ) : null}
-            <Button type="submit" disabled={pending} className="w-full">
-              {pending ? (
-                <>
-                  <Loader2 className="size-4 animate-spin" />
-                  Saving
-                </>
-              ) : (
-                "Continue to dashboard"
-              )}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+      <form action={formAction} className="flex flex-col gap-4">
+        <div className="grid gap-1.5">
+          <Label htmlFor="phone">Phone number</Label>
+          <Input
+            id="phone"
+            name="phone"
+            type="tel"
+            placeholder="01XXXXXXXXX"
+            required
+            className="h-11 rounded-lg bg-secondary/60"
+          />
+        </div>
+        <div className="grid gap-1.5">
+          <Label htmlFor="district">District</Label>
+          <Select
+            value={district}
+            onValueChange={(v) => setDistrict(v ?? "")}
+          >
+            <SelectTrigger id="district" className="h-11 w-full rounded-lg bg-secondary/60">
+              <SelectValue placeholder="Select your district" />
+            </SelectTrigger>
+            <SelectContent>
+              {DISTRICTS.map((d) => (
+                <SelectItem key={d} value={d}>
+                  {d}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <input type="hidden" name="district" value={district} required />
+        </div>
+        <div className="grid gap-1.5">
+          <Label htmlFor="businessName">
+            Business name{" "}
+            <span className="text-muted-foreground">(optional)</span>
+          </Label>
+          <Input
+            id="businessName"
+            name="businessName"
+            className="h-11 rounded-lg bg-secondary/60"
+          />
+        </div>
+        <div className="grid gap-1.5">
+          <Label>Who can see your profile?</Label>
+          <Select
+            value={visibility}
+            onValueChange={(v) => setVisibility(v ?? "students_only")}
+          >
+            <SelectTrigger className="h-11 w-full rounded-lg bg-secondary/60">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="students_only">
+                Other students only
+              </SelectItem>
+              <SelectItem value="public">
+                Public (anyone visiting the site)
+              </SelectItem>
+              <SelectItem value="private">
+                Private (hidden from the directory)
+              </SelectItem>
+            </SelectContent>
+          </Select>
+          <input type="hidden" name="visibility" value={visibility} />
+          <p className="text-xs text-muted-foreground">
+            Other enrolled students may see your name, district and
+            business name depending on this setting. You can change it
+            anytime in Settings.
+          </p>
+        </div>
+        {state && "error" in state ? (
+          <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            {state.error}
+          </p>
+        ) : null}
+        <Button type="submit" disabled={pending} size="lg" className="w-full">
+          {pending ? (
+            <>
+              <Loader2 className="size-4 animate-spin" />
+              Saving
+            </>
+          ) : (
+            "Continue to dashboard"
+          )}
+        </Button>
+      </form>
     </div>
   );
 }
