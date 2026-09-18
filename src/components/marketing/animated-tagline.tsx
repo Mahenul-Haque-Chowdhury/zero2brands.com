@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { cn } from "cn";
 
 const LINES = [
   {
     // No forced break: this wraps naturally at each breakpoint (3 lines on
     // narrow mobile, fewer as the viewport widens and font-size scales up
     // with it), same as the Bangla line below.
-    text: "Build your own clothing brand, from zero.",
+    parts: ["Build your own clothing brand, from zero."],
     lang: "en" as const,
     fontFamily: "var(--font-sen)",
     // Bengali glyphs run visually taller than Latin ones at the same
@@ -16,10 +15,15 @@ const LINES = [
     // Bangla line is set a notch smaller to read as the same size.
     fontSize: "1em",
     lineHeight: 1.1,
-    className: "",
   },
   {
-    text: "শূন্য থেকে নিজের ক্লোদিং ব্র্যান্ড তৈরী করুন আমাদের সাথে",
+    // Explicit breaks at word boundaries (3 words per line) on mobile only
+    // (`sm:hidden` on the <br>s below): estimating a max-width in ch/rem
+    // against Bengali conjunct clusters was unreliable (a 12rem cap
+    // produced 5 lines, not the intended 3), so this is deterministic
+    // instead. At sm: and up the <br>s are hidden and it wraps naturally,
+    // since both languages already land on a similar line count there.
+    parts: ["শূন্য থেকে নিজের", "ক্লোদিং ব্র্যান্ড", "তৈরী করুন আমাদের সাথে"],
     lang: "bn" as const,
     fontFamily: "var(--font-bengali)",
     fontSize: "0.82em",
@@ -27,12 +31,6 @@ const LINES = [
     // matras sit closer to the line above/below at the same ratio, so this
     // line reads as cramped without a small bump.
     lineHeight: 1.35,
-    // On narrow phones this text is short enough to fit 2 lines while the
-    // longer English sentence wraps to 3, which looks mismatched inside
-    // the fixed-height box. Capping the width on mobile only forces a 3rd
-    // line there too; sm: and up removes the cap since both languages
-    // already land on a similar line count at those widths.
-    className: "max-w-[12rem] sm:max-w-none",
   },
 ];
 
@@ -93,7 +91,6 @@ export function AnimatedTagline({ className }: { className?: string }) {
           key={line.lang}
           lang={line.lang}
           aria-hidden="true"
-          className={cn("mx-auto", line.className)}
           style={{
             gridArea: "1 / 1",
             opacity: i === index && visible ? 1 : 0,
@@ -103,7 +100,17 @@ export function AnimatedTagline({ className }: { className?: string }) {
             lineHeight: line.lineHeight,
           }}
         >
-          {line.text}
+          {line.parts.map((part, partIndex) => (
+            <span key={partIndex}>
+              {partIndex > 0 ? (
+                <>
+                  <br className="sm:hidden" />
+                  <span className="hidden sm:inline"> </span>
+                </>
+              ) : null}
+              {part}
+            </span>
+          ))}
         </span>
       ))}
     </span>
