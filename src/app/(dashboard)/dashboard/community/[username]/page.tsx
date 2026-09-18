@@ -31,9 +31,9 @@ export default async function PublicProfilePage({
       <Card>
         <CardContent className="pt-6">
           <div className="flex items-center gap-4">
-            <Avatar className="size-16">
+            <Avatar className="size-16 ring-2 ring-accent/20 ring-offset-2 ring-offset-card">
               <AvatarImage src={profile.avatar_url ?? undefined} />
-              <AvatarFallback className="text-xl">
+              <AvatarFallback className="bg-accent/10 text-xl font-semibold text-accent">
                 {profile.full_name?.[0]?.toUpperCase() ?? "?"}
               </AvatarFallback>
             </Avatar>

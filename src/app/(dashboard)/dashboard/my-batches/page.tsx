@@ -30,8 +30,8 @@ export default async function MyBatchesPage() {
       </div>
 
       {batches.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border py-16 text-center">
-          <span className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
+        <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-card/50 py-16 text-center">
+          <span className="flex size-14 items-center justify-center rounded-full bg-muted text-muted-foreground ring-1 ring-border">
             <Users2 className="size-6" />
           </span>
           <p className="font-medium">You are not enrolled in any live batches yet</p>
@@ -46,10 +46,16 @@ export default async function MyBatchesPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
           {batches.map((batch) => (
-            <Link key={batch.id} href={`/dashboard/my-batches/${batch.slug}`}>
-              <Card className="h-full transition-colors hover:border-accent/40 hover:bg-muted/50">
+            <Link
+              key={batch.id}
+              href={`/dashboard/my-batches/${batch.slug}`}
+              className="rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <Card className="group h-full transition-all duration-300 ease-out hover:-translate-y-0.5 hover:ring-accent/40 hover:shadow-md">
                 <CardHeader>
-                  <CardTitle>{batch.title}</CardTitle>
+                  <CardTitle className="transition-colors duration-200 group-hover:text-accent">
+                    {batch.title}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                   <span className="inline-flex items-center gap-1.5">

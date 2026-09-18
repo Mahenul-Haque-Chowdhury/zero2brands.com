@@ -123,8 +123,8 @@ export function CommunityDirectory() {
           ))}
         </div>
       ) : entries.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border py-16 text-center">
-          <span className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
+        <div className="flex animate-in fade-in flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-card/50 py-16 text-center duration-300">
+          <span className="flex size-14 items-center justify-center rounded-full bg-muted text-muted-foreground ring-1 ring-border">
             <Users className="size-6" />
           </span>
           <p className="font-medium">No students found</p>
@@ -137,17 +137,23 @@ export function CommunityDirectory() {
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {entries.map((entry) => (
-            <Link key={entry.id} href={`/dashboard/community/${entry.username}`}>
-              <Card className="h-full transition-colors hover:border-accent/40 hover:bg-muted/50">
+            <Link
+              key={entry.id}
+              href={`/dashboard/community/${entry.username}`}
+              className="rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <Card className="group h-full transition-all duration-300 ease-out hover:-translate-y-0.5 hover:ring-accent/40 hover:shadow-md">
                 <CardContent className="flex items-center gap-3 pt-6">
-                  <Avatar>
+                  <Avatar className="ring-1 ring-border transition-all duration-300 group-hover:ring-accent/40">
                     <AvatarImage src={entry.avatar_url ?? undefined} />
-                    <AvatarFallback>
+                    <AvatarFallback className="bg-accent/10 text-sm font-semibold text-accent">
                       {entry.full_name?.[0]?.toUpperCase() ?? "?"}
                     </AvatarFallback>
                   </Avatar>
                   <div className="min-w-0">
-                    <p className="truncate font-medium">{entry.full_name}</p>
+                    <p className="truncate font-medium transition-colors duration-200 group-hover:text-accent">
+                      {entry.full_name}
+                    </p>
                     <p className="truncate text-xs text-muted-foreground">
                       {entry.business_name ?? entry.district ?? ""}
                     </p>

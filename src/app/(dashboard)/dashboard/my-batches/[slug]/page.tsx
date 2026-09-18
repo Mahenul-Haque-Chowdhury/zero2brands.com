@@ -58,9 +58,14 @@ export default async function BatchDetailPage({
         {sessions && sessions.length > 0 ? (
           <div className="flex flex-col gap-3">
             {sessions.map((session) => (
-              <Card key={session.id}>
-                <CardHeader className="flex-row items-center justify-between">
-                  <CardTitle className="text-base">{session.title}</CardTitle>
+              <Card
+                key={session.id}
+                className="transition-shadow duration-300 hover:shadow-sm"
+              >
+                <CardHeader className="flex-row items-center justify-between gap-3">
+                  <CardTitle className="min-w-0 truncate text-base">
+                    {session.title}
+                  </CardTitle>
                   <JoinSessionButton liveSessionId={session.id} />
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground">
@@ -86,10 +91,12 @@ export default async function BatchDetailPage({
         {members && members.length > 0 ? (
           <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-6">
             {members.map((m) => (
-              <div key={m.user_id} className="flex flex-col items-center gap-1.5 text-center">
-                <Avatar className="size-12">
+              <div key={m.user_id} className="group flex flex-col items-center gap-1.5 text-center">
+                <Avatar className="size-12 ring-1 ring-border transition-all duration-300 group-hover:ring-accent/40">
                   <AvatarImage src={m.avatar_url ?? undefined} />
-                  <AvatarFallback>{m.full_name?.[0]?.toUpperCase() ?? "?"}</AvatarFallback>
+                  <AvatarFallback className="bg-accent/10 text-sm font-semibold text-accent">
+                    {m.full_name?.[0]?.toUpperCase() ?? "?"}
+                  </AvatarFallback>
                 </Avatar>
                 <p className="w-full truncate text-xs">{m.full_name}</p>
               </div>

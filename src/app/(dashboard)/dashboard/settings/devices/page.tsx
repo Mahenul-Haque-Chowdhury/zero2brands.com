@@ -26,11 +26,16 @@ export default async function DevicesPage() {
       <div className="flex flex-col gap-3">
         {sessions && sessions.length > 0 ? (
           sessions.map((s) => (
-            <Card key={s.id}>
-              <CardHeader className="flex-row items-center justify-between">
-                <CardTitle className="flex items-center gap-2 text-sm font-medium">
-                  <Laptop className="size-4 text-muted-foreground" />
-                  {s.user_agent?.slice(0, 60) ?? "Unknown device"}
+            <Card
+              key={s.id}
+              className="transition-shadow duration-300 hover:shadow-sm"
+            >
+              <CardHeader className="flex-row items-center justify-between gap-3">
+                <CardTitle className="flex min-w-0 items-center gap-2 text-sm font-medium">
+                  <Laptop className="size-4 shrink-0 text-muted-foreground" />
+                  <span className="truncate">
+                    {s.user_agent?.slice(0, 60) ?? "Unknown device"}
+                  </span>
                 </CardTitle>
                 <RevokeDeviceButton sessionId={s.id} />
               </CardHeader>
