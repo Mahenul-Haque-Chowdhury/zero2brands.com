@@ -47,17 +47,18 @@ export function SuccessPagePoller({ invoice }: { invoice: string }) {
 
   if (timedOut) {
     return (
-      <p className="text-sm text-muted-foreground">
+      <p className="max-w-sm text-sm text-muted-foreground">
         This is taking longer than usual. Your invoice number is{" "}
-        <strong>{invoice}</strong> — please contact support with this
-        number if access doesn&apos;t appear within a few minutes.
+        <strong className="text-foreground">{invoice}</strong>, please
+        contact support with this number if access doesn&apos;t appear
+        within a few minutes.
       </p>
     );
   }
 
   return (
     <p className="text-sm text-muted-foreground">
-      Invoice: <strong>{invoice}</strong>
+      Invoice: <strong className="text-foreground">{invoice}</strong>
     </p>
   );
 }
