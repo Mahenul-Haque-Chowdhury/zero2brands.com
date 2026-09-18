@@ -5,6 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { JsonLd } from "@/components/marketing/json-ld";
+import { AnimatedTagline } from "@/components/marketing/animated-tagline";
 
 export const metadata: Metadata = {
   title: "Zero2Brands - Build a Clothing Brand From Zero",
@@ -65,7 +66,7 @@ export default async function HomePage() {
             For Bangladeshi entrepreneurs
           </span>
           <h1 className="mt-6 max-w-3xl text-balance text-4xl font-semibold text-white sm:text-5xl lg:text-6xl">
-            {course?.title ?? "Build a clothing brand, from zero."}
+            <AnimatedTagline />
           </h1>
           <p className="mt-6 max-w-xl text-balance text-lg text-white/75">
             {course?.subtitle ??
