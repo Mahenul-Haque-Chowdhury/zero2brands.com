@@ -16,7 +16,11 @@ const NAV = [
   { href: "/faq", label: "FAQ" },
 ];
 
-export function SiteHeader() {
+export function SiteHeader({
+  isAuthenticated = false,
+}: {
+  isAuthenticated?: boolean;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -48,16 +52,26 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Button
-            variant="ghost"
-            className="text-base text-white hover:bg-white/10 hover:text-white"
-            render={<Link href="/login">Log in</Link>}
-          />
-          <Button
-            size="lg"
-            className="h-11 bg-accent px-6 text-base text-accent-foreground hover:bg-accent/90"
-            render={<Link href="/course">Enroll now</Link>}
-          />
+          {isAuthenticated ? (
+            <Button
+              size="lg"
+              className="h-11 bg-accent px-6 text-base text-accent-foreground hover:bg-accent/90"
+              render={<Link href="/dashboard">Go to dashboard</Link>}
+            />
+          ) : (
+            <>
+              <Button
+                variant="ghost"
+                className="text-base text-white hover:bg-white/10 hover:text-white"
+                render={<Link href="/login">Log in</Link>}
+              />
+              <Button
+                size="lg"
+                className="h-11 bg-accent px-6 text-base text-accent-foreground hover:bg-accent/90"
+                render={<Link href="/course">Enroll now</Link>}
+              />
+            </>
+          )}
         </div>
 
         <button
@@ -86,15 +100,36 @@ export function SiteHeader() {
             ))}
           </nav>
           <div className="mt-4 flex flex-col gap-2 border-t border-white/10 pt-4">
-            <Button
-              variant="outline"
-              className="border-white/20 text-white hover:bg-white/10 hover:text-white"
-              render={<Link href="/login">Log in</Link>}
-            />
-            <Button
-              className="bg-accent text-accent-foreground hover:bg-accent/90"
-              render={<Link href="/course">Enroll now</Link>}
-            />
+            {isAuthenticated ? (
+              <Button
+                className="bg-accent text-accent-foreground hover:bg-accent/90"
+                render={
+                  <Link href="/dashboard" onClick={() => setOpen(false)}>
+                    Go to dashboard
+                  </Link>
+                }
+              />
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  className="border-white/20 text-white hover:bg-white/10 hover:text-white"
+                  render={
+                    <Link href="/login" onClick={() => setOpen(false)}>
+                      Log in
+                    </Link>
+                  }
+                />
+                <Button
+                  className="bg-accent text-accent-foreground hover:bg-accent/90"
+                  render={
+                    <Link href="/course" onClick={() => setOpen(false)}>
+                      Enroll now
+                    </Link>
+                  }
+                />
+              </>
+            )}
           </div>
         </div>
       ) : null}
