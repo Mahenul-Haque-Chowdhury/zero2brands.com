@@ -22,14 +22,14 @@ export function GrayVallyCta() {
   }
 
   return (
-    <Card className="border-accent/30 bg-accent/5">
+    <Card className="group relative overflow-hidden ring-1 ring-accent/30 bg-accent/5 transition-shadow duration-300 hover:shadow-md">
       <CardContent className="flex flex-col items-start gap-3 pt-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-start gap-3">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent transition-transform duration-300 group-hover:scale-105">
             <Rocket className="size-4" />
           </span>
           <div>
-            <p className="font-medium">Ready to launch?</p>
+            <p className="font-medium">You are ready to launch</p>
             <p className="text-sm text-muted-foreground">
               Let our partner GrayVally build your store.
             </p>
@@ -38,7 +38,7 @@ export function GrayVallyCta() {
         <Button
           size="sm"
           onClick={handleClick}
-          className="w-full sm:w-auto"
+          className="w-full transition-transform duration-200 active:scale-[0.98] sm:w-auto"
           render={<Link href="/dashboard/store-request">Get started</Link>}
         />
       </CardContent>

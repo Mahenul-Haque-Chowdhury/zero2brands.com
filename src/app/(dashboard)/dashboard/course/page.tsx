@@ -64,17 +64,29 @@ export default async function CoursePage() {
         modules={modules ?? []}
         completedLessonIds={completedLessonIds}
       />
-      <div className="flex-1 rounded-xl border border-border bg-card p-6 sm:p-8">
-        <h1 className="text-2xl font-semibold tracking-tight">{course.title}</h1>
-        <p className="mt-2 text-muted-foreground">
-          Select a lesson from the sidebar to begin.
-        </p>
-        {firstLesson ? (
-          <Button className="mt-5" render={<Link href={`/dashboard/course/${firstLesson.slug}`} />}>
-            <PlayCircle className="size-4" />
-            Start with &quot;{firstLesson.title}&quot;
-          </Button>
-        ) : null}
+      <div className="relative flex-1 overflow-hidden rounded-xl bg-brand-hero p-6 sm:p-10">
+        <div className="bg-brand-dots mask-fade-edges absolute inset-0" />
+        <div className="relative">
+          <span className="text-xs font-semibold tracking-wide text-accent uppercase">
+            Your course
+          </span>
+          <h1 className="mt-3 text-balance text-2xl font-semibold text-white sm:text-3xl">
+            {course.title}
+          </h1>
+          <p className="mt-3 max-w-md text-white/65">
+            Pick a lesson from the list to begin, or jump straight back in
+            below.
+          </p>
+          {firstLesson ? (
+            <Button
+              className="mt-6 transition-transform duration-200 active:scale-[0.98]"
+              render={<Link href={`/dashboard/course/${firstLesson.slug}`} />}
+            >
+              <PlayCircle className="size-4" />
+              Start with &quot;{firstLesson.title}&quot;
+            </Button>
+          ) : null}
+        </div>
       </div>
     </div>
   );

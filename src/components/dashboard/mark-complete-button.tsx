@@ -38,15 +38,23 @@ export function MarkCompleteButton({
 
   if (completed) {
     return (
-      <div className="flex items-center gap-1.5 text-sm font-medium text-accent">
-        <CheckCircle2 className="size-4" />
+      <div className="flex items-center gap-1.5 rounded-lg bg-accent/10 px-3 py-1.5 text-sm font-medium text-accent ring-1 ring-accent/20">
+        {/* zoom-in on the tick gives marking a lesson done a small moment of
+            payoff instead of a silent label swap. */}
+        <CheckCircle2 className="size-4 animate-in zoom-in-50 duration-300" />
         Completed
       </div>
     );
   }
 
   return (
-    <Button size="sm" variant="outline" onClick={handleClick} disabled={pending}>
+    <Button
+      size="sm"
+      variant="outline"
+      onClick={handleClick}
+      disabled={pending}
+      className="transition-all duration-200 hover:border-accent/50 hover:text-accent active:scale-[0.98]"
+    >
       {pending ? (
         <>
           <Loader2 className="size-4 animate-spin" />

@@ -21,7 +21,12 @@ export function JoinSessionButton({ liveSessionId }: { liveSessionId: string }) 
   }
 
   return (
-    <Button size="sm" onClick={handleClick} disabled={pending}>
+    <Button
+      size="sm"
+      onClick={handleClick}
+      disabled={pending}
+      className="shrink-0 transition-transform duration-200 active:scale-[0.98]"
+    >
       {pending ? (
         <>
           <Loader2 className="size-4 animate-spin" />

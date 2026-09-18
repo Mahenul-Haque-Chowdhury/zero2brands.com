@@ -52,7 +52,7 @@ export function LessonNotes({
       />
       <Button
         size="sm"
-        className="mt-3"
+        className="mt-3 transition-transform duration-200 active:scale-[0.98]"
         onClick={handleSave}
         disabled={pending}
       >

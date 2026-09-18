@@ -44,18 +44,19 @@ export default async function LessonPage({
     }
 
     return (
-      <div className="mx-auto flex max-w-2xl flex-col items-center gap-3 py-16 text-center">
-        <span className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
+      <div className="mx-auto flex max-w-2xl flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-card py-16 text-center">
+        <span className="flex size-14 items-center justify-center rounded-full bg-muted text-muted-foreground ring-1 ring-border">
           <Lock className="size-6" />
         </span>
-        <h1 className="text-xl font-semibold">This lesson is locked</h1>
-        <p className="text-muted-foreground">
-          Complete the previous lessons in order to unlock this one.
+        <h1 className="mt-1 text-xl font-semibold">This lesson is locked</h1>
+        <p className="max-w-sm text-muted-foreground">
+          Lessons unlock in order. Finish the ones before this to open it.
         </p>
         <Link
           href="/dashboard/course"
-          className="mt-1 font-medium text-primary underline-offset-4 hover:underline"
+          className="mt-3 inline-flex h-10 items-center justify-center gap-1.5 rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 active:scale-[0.98]"
         >
+          <ChevronLeft className="size-4" />
           Back to course
         </Link>
       </div>
@@ -148,9 +149,9 @@ export default async function LessonPage({
                 <li key={r.id}>
                   <a
                     href={`/dashboard/resources?download=${r.id}`}
-                    className="inline-flex items-center gap-1.5 text-sm text-primary underline-offset-4 hover:underline"
+                    className="group inline-flex items-center gap-1.5 text-sm text-primary underline-offset-4 transition-colors duration-200 hover:underline"
                   >
-                    <FileText className="size-3.5" />
+                    <FileText className="size-3.5 transition-colors duration-200 group-hover:text-accent" />
                     {r.title}
                   </a>
                 </li>
@@ -164,19 +165,19 @@ export default async function LessonPage({
             {prevLesson ? (
               <Link
                 href={`/dashboard/course/${prevLesson.slug}`}
-                className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="group inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
               >
-                <ChevronLeft className="size-4" />
+                <ChevronLeft className="size-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
                 Previous
               </Link>
             ) : null}
             {nextLesson ? (
               <Link
                 href={`/dashboard/course/${nextLesson.slug}`}
-                className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="group inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground"
               >
                 Next
-                <ChevronRight className="size-4" />
+                <ChevronRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
               </Link>
             ) : null}
           </div>
