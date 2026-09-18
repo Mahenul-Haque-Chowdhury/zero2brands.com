@@ -1,0 +1,27 @@
+"use client";
+
+import { useTransition } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { getZoomJoinUrl } from "@/lib/batches/actions";
+
+export function JoinSessionButton({ liveSessionId }: { liveSessionId: string }) {
+  const [pending, startTransition] = useTransition();
+
+  function handleClick() {
+    startTransition(async () => {
+      const result = await getZoomJoinUrl(liveSessionId);
+      if ("error" in result) {
+        toast.error(result.error);
+        return;
+      }
+      window.open(result.url, "_blank", "noopener,noreferrer");
+    });
+  }
+
+  return (
+    <Button size="sm" onClick={handleClick} disabled={pending}>
+      {pending ? "Loading…" : "Join session"}
+    </Button>
+  );
+}
