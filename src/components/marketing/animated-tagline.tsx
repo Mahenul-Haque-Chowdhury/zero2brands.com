@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 
 const LINES = [
   {
-    text: "Build your own clothing brand, from zero.",
+    // A forced break after "own" keeps this at 2 lines at every breakpoint
+    // (mobile through desktop) instead of wrapping to 3 lines on narrow
+    // screens, which mismatched the Bangla line's 2-line wrap and made the
+    // fixed-height box look unbalanced.
+    parts: ["Build your own", "clothing brand, from zero."],
     lang: "en" as const,
     fontFamily: "var(--font-sen)",
     // Bengali glyphs run visually taller than Latin ones at the same
@@ -14,7 +18,7 @@ const LINES = [
     lineHeight: 1.1,
   },
   {
-    text: "শূন্য থেকে নিজের ব্র্যান্ড তৈরী করুন আমাদের সাথে",
+    parts: ["শূন্য থেকে নিজের ক্লোদিং ব্র্যান্ড", "তৈরী করুন আমাদের সাথে"],
     lang: "bn" as const,
     fontFamily: "var(--font-bengali)",
     fontSize: "0.82em",
@@ -65,16 +69,23 @@ export function AnimatedTagline({ className }: { className?: string }) {
   }, []);
 
   return (
-    <span className={className} style={{ display: "grid" }}>
+    <span
+      className={className}
+      style={{ display: "grid" }}
+      role="text"
+      aria-label="Build your own clothing brand, from zero."
+    >
       {/* All lines share the same grid cell (both row 1 / column 1), so the
           box's height is the MAX of the lines, not their sum. Only the
           visible one has opacity 1; the rest are opacity 0 but still occupy
-          the shared cell, which is what keeps the height fixed. */}
+          the shared cell, which is what keeps the height fixed. The lines
+          themselves are aria-hidden since the wrapper's aria-label already
+          gives assistive tech one clean, static announcement. */}
       {LINES.map((line, i) => (
         <span
           key={line.lang}
           lang={line.lang}
-          aria-hidden={i !== index}
+          aria-hidden="true"
           style={{
             gridArea: "1 / 1",
             opacity: i === index && visible ? 1 : 0,
@@ -84,7 +95,12 @@ export function AnimatedTagline({ className }: { className?: string }) {
             lineHeight: line.lineHeight,
           }}
         >
-          {line.text}
+          {line.parts.map((part, partIndex) => (
+            <span key={partIndex}>
+              {partIndex > 0 ? <br /> : null}
+              {part}
+            </span>
+          ))}
         </span>
       ))}
     </span>
