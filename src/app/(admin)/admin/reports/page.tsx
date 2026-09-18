@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireAdmin } from "@/lib/auth/guards";
 import { minutesAgo } from "@/lib/utils/dates";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,8 +33,11 @@ export default async function AdminReportsPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
+      <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Reports</h1>
+        <Link href="/admin/reports/watchlist" className="text-sm underline">
+          Abuse watchlist
+        </Link>
       </div>
 
       <Card>

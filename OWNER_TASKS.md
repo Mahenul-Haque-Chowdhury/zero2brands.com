@@ -71,4 +71,45 @@ the relevant account) can do — the code side is already built or stubbed.
   4. Regenerate types against the real project: `npx supabase gen types typescript --project-id <ref> --schema public > src/types/database.ts` (the `db:types` script expects `SUPABASE_PROJECT_ID` set).
   5. Do NOT run `supabase/seed.sql` against production — it creates fake auth users with a shared test password. It's for local/dev only (`supabase db reset` runs it automatically).
 
+## Phase 16: Launch
+
+Content load (all manual, from the plan):
+- Upload all course videos, write descriptions, attach resources, write FAQ, add testimonials, finalize pricing.
+- Verify every video plays, every resource downloads, durations are correct.
+
+Switch to production:
+- Set `BKASH_IS_SANDBOX=false`, the live bKash base URL, and live bKash credentials — **Production Vercel environment only**, never Preview/Development.
+- Confirm the production server IP (or the fixed-IP proxy's IP, if you needed one — see QUESTIONS_FOR_OWNER.md) is whitelisted with bKash.
+- Register the production callback URL with bKash: `https://zero2brands.com/api/payments/bkash/callback`.
+- Remove `META_TEST_EVENT_CODE` from the Production environment.
+- Update Supabase Auth Site URL and Redirect URLs to the production domain.
+- Update Google OAuth authorized origins/redirect URIs to production, and **publish the OAuth consent screen from Testing to Production** (requires live privacy/terms pages, which this build has drafted but you must review and finalize first).
+- Point the Bunny production library's allowed referrers at the production domain.
+- Set `NEXT_PUBLIC_SITE_URL` to the production URL in Vercel.
+
+Domain go-live:
+- Vercel > Settings > Domains: add `zero2brands.com` and `www.zero2brands.com`, add the DNS records Vercel specifies in Cloudflare.
+- Sequence matters: add the domain in Vercel, wait for the certificate to issue, THEN switch Cloudflare SSL to Full (Strict). Switching SSL mode first causes a redirect loop.
+- 301 redirect www to non-www (the app's metadata already treats non-www as canonical).
+- Verify HTTPS, valid certificate, no mixed content, and test from an actual Bangladeshi mobile connection (not a VPN).
+
+Final checks before taking the site live:
+- Submit the sitemap (already generated at `/sitemap.xml`) to Search Console.
+- Verify the Meta Pixel fires correctly on production with the Pixel Helper browser extension.
+- Confirm the CSP header is switched from report-only to enforcing (see `next.config.ts` — currently `Content-Security-Policy-Report-Only`; flip to `Content-Security-Policy` once you've reviewed a few days of report-only violations in Sentry/browser console) and that video playback and bKash checkout both still work under it.
+- Confirm `/dashboard` and `/admin` redirect correctly when logged out and are not indexed (robots.ts already disallows both).
+- Confirm the community directory is inaccessible to a signed-up-but-unpaid account (covered by the RLS integration tests, but re-verify by hand once too).
+- **Run one real bKash transaction on live for a small amount.** Verify: payment recorded, enrollment created, confirmation email sent, confirmation SMS sent, Meta Purchase event received in Events Manager. Then refund it through `/admin/payments` and verify access is revoked.
+- Confirm the reconciliation cron (`/api/cron/reconcile-payments`, runs every 15 minutes per `vercel.json`) is actually running and logging on Vercel once deployed — cron jobs only run in Production, not Preview.
+- Confirm Cloudflare WAF rules and rate limiting are active as the second layer in front of `/api/*`.
+- Set up uptime alerts on `/api/health` and the home page, sent somewhere you'll actually see promptly.
+
+## Phase 17: Post-launch operations
+
+All cron routes referenced in `vercel.json` are built and guarded by `CRON_SECRET` — you need to set `CRON_SECRET` in Vercel's environment variables (any long random string) before crons will authenticate successfully; Vercel automatically sends it as a Bearer token to routes listed in `vercel.json`'s crons array.
+
+Week one: watch Sentry daily (once wired — see Phase 0.13), watch `/admin/reports` (the reconciliation view) daily, and answer support messages quickly. Early trust compounds in this market per the plan.
+
+Week two onward: review the abuse watchlist at `/admin/reports/watchlist` (surfaces `audit_log` rows the nightly cron writes), the moderation queue at `/admin/reports`, Search Console coverage, Meta Event Match Quality, and confirm the store request pipeline (`/admin/store-requests`) is being worked.
+
 (This file will keep growing as later phases add owner-only steps — payment go-live switches, content loading, DNS cutover, etc. See also QUESTIONS_FOR_OWNER.md for decisions that were defaulted and may need your review.)
