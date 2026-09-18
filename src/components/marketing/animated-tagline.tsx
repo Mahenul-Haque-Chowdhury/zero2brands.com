@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 
 const LINES = [
   {
-    // A forced break after "own" keeps this at 2 lines at every breakpoint
-    // (mobile through desktop) instead of wrapping to 3 lines on narrow
-    // screens, which mismatched the Bangla line's 2-line wrap and made the
-    // fixed-height box look unbalanced.
-    parts: ["Build your own", "clothing brand, from zero."],
+    // No forced break: this wraps naturally at each breakpoint (3 lines on
+    // narrow mobile, fewer as the viewport widens and font-size scales up
+    // with it), same as the Bangla line below.
+    text: "Build your own clothing brand, from zero.",
     lang: "en" as const,
     fontFamily: "var(--font-sen)",
     // Bengali glyphs run visually taller than Latin ones at the same
@@ -18,7 +17,7 @@ const LINES = [
     lineHeight: 1.1,
   },
   {
-    parts: ["শূন্য থেকে নিজের ক্লোদিং ব্র্যান্ড", "তৈরী করুন আমাদের সাথে"],
+    text: "শূন্য থেকে নিজের ক্লোদিং ব্র্যান্ড তৈরী করুন আমাদের সাথে",
     lang: "bn" as const,
     fontFamily: "var(--font-bengali)",
     fontSize: "0.82em",
@@ -95,12 +94,7 @@ export function AnimatedTagline({ className }: { className?: string }) {
             lineHeight: line.lineHeight,
           }}
         >
-          {line.parts.map((part, partIndex) => (
-            <span key={partIndex}>
-              {partIndex > 0 ? <br /> : null}
-              {part}
-            </span>
-          ))}
+          {line.text}
         </span>
       ))}
     </span>
