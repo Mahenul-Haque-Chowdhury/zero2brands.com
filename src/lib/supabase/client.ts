@@ -2,7 +2,7 @@
 
 import { createBrowserClient } from "@supabase/ssr";
 import type { Database } from "@/types/database";
-import { clientEnv } from "@/lib/env";
+import { clientEnv } from "@/lib/env.client";
 
 /**
  * Browser Supabase client. Uses the anon key, so every query runs under RLS

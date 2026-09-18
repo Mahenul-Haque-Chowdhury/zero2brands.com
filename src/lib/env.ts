@@ -1,18 +1,18 @@
+import "server-only";
 /**
- * Environment variable validation.
+ * Server-only environment variable validation. Importing this file from any
+ * client component or module that ends up in a client bundle is a build
+ * failure thanks to the `server-only` guard above — that is deliberate.
  *
- * Server variables are validated eagerly at import time so a missing secret
- * fails the build / boot rather than surfacing as a runtime crash deep in a
- * request handler. Client variables are validated separately and must never
- * import server-only values.
- *
- * Do NOT import `serverEnv` from any file that ends up in a client bundle.
- * Files that only need public values should import `clientEnv`.
+ * For public (NEXT_PUBLIC_*) values needed in the browser, import
+ * `clientEnv` from `@/lib/env.client` instead. Keeping the two schemas in
+ * separate files (rather than one file exporting both) means a client
+ * bundle can never end up with the server schema's field-name strings
+ * (or, if this guard were ever removed, its values) tree-shaken in
+ * alongside the legitimately-public clientEnv import.
  */
 import { z } from "zod";
 
-// Treats an empty string the same as "unset" so optional env vars left
-// blank in .env.local (as .env.example encourages) don't fail validation.
 const optionalString = () =>
   z.preprocess(
     (val) => (val === "" ? undefined : val),
@@ -84,17 +84,7 @@ const serverSchema = z.object({
   CRON_SECRET: z.string().optional(),
 });
 
-const clientSchema = z.object({
-  NEXT_PUBLIC_SITE_URL: z.string().url().default("http://localhost:3000"),
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
-  NEXT_PUBLIC_META_PIXEL_ID: z.string().optional(),
-  NEXT_PUBLIC_GA4_MEASUREMENT_ID: z.string().optional(),
-  NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
-});
-
 type ServerEnv = z.infer<typeof serverSchema>;
-type ClientEnv = z.infer<typeof clientSchema>;
 
 function loadServerEnv(): ServerEnv {
   const parsed = serverSchema.safeParse(process.env);
@@ -108,32 +98,4 @@ function loadServerEnv(): ServerEnv {
   return parsed.data;
 }
 
-function loadClientEnv(): ClientEnv {
-  const parsed = clientSchema.safeParse({
-    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    NEXT_PUBLIC_META_PIXEL_ID: process.env.NEXT_PUBLIC_META_PIXEL_ID,
-    NEXT_PUBLIC_GA4_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID,
-    NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  });
-  if (!parsed.success) {
-    console.error(
-      "Invalid client environment variables:",
-      parsed.error.flatten().fieldErrors
-    );
-    throw new Error("Invalid client environment variables. See log above.");
-  }
-  return parsed.data;
-}
-
-// Client env is always safe to compute (public values only).
-export const clientEnv = loadClientEnv();
-
-// Server env must never be imported into a client component/bundle.
-// We lazily validate on first access on the server so importing this module
-// from a route file that is statically analyzed as server-only is safe, but
-// we still eagerly validate here since this file itself is never marked
-// "use client" and Next.js will fail the build if it ends up in a client
-// chunk that references process.env server keys incorrectly.
 export const serverEnv: ServerEnv = loadServerEnv();
