@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { JsonLd } from "@/components/marketing/json-ld";
+import { Reveal } from "@/components/motion/reveal";
 
 export async function generateMetadata({
   params,
@@ -62,16 +63,19 @@ export default async function BlogPostPage({
         <ArrowLeft className="size-4" />
         Back to blog
       </Link>
-      <h1 className="mt-6 text-balance text-3xl font-semibold font-heading sm:text-4xl">
-        {post.title}
-      </h1>
-      {post.published_at ? (
-        <p className="mt-3 text-sm text-muted-foreground">
-          {new Date(post.published_at).toLocaleDateString()}
-        </p>
-      ) : null}
+      <Reveal>
+        <h1 className="mt-6 text-balance text-3xl font-semibold font-heading sm:text-4xl">
+          {post.title}
+        </h1>
+        {post.published_at ? (
+          <p className="mt-3 text-sm text-muted-foreground">
+            {new Date(post.published_at).toLocaleDateString()}
+          </p>
+        ) : null}
+        <hr className="mt-8 border-border" />
+      </Reveal>
       <div
-        className="prose prose-neutral mt-10 max-w-none text-foreground prose-headings:font-heading prose-a:text-primary"
+        className="prose prose-neutral mt-10 max-w-none text-base leading-relaxed text-foreground prose-headings:font-heading prose-headings:tracking-tight prose-h2:mt-12 prose-h2:text-2xl prose-h3:mt-8 prose-p:leading-relaxed prose-a:text-primary prose-a:underline-offset-4 prose-strong:text-foreground prose-img:rounded-xl prose-blockquote:border-l-accent prose-blockquote:text-muted-foreground"
         dangerouslySetInnerHTML={{ __html: post.content_html ?? "" }}
       />
     </article>

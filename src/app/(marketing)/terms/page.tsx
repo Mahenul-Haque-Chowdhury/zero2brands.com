@@ -5,13 +5,19 @@ export const metadata: Metadata = { title: "Terms of Service" };
 export default function TermsPage() {
   return (
     <div className="mx-auto max-w-prose px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
-      <h1 className="text-3xl font-semibold sm:text-4xl">Terms of Service</h1>
-      <p className="mt-2 text-sm text-muted-foreground">
+      <span className="text-xs font-semibold uppercase tracking-wide text-accent">
+        Legal
+      </span>
+      <h1 className="mt-3 text-3xl font-semibold sm:text-4xl">
+        Terms of Service
+      </h1>
+      <p className="mt-3 text-sm text-muted-foreground">
         Draft, pending final review by the business owner. Last updated{" "}
         {new Date().toLocaleDateString()}.
       </p>
+      <hr className="mt-8 border-border" />
 
-      <div className="prose prose-neutral mt-8 max-w-none text-sm leading-relaxed text-muted-foreground prose-headings:font-heading prose-headings:text-foreground">
+      <div className="prose prose-neutral mt-8 max-w-none text-sm leading-relaxed text-muted-foreground prose-headings:font-heading prose-headings:text-foreground prose-headings:tracking-tight prose-h2:mt-10 prose-h2:text-lg prose-p:leading-relaxed prose-strong:text-foreground">
         <h2>1. The product</h2>
         <p>
           Zero2Brands sells access to a recorded course (lifetime access, no

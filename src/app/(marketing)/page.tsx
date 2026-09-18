@@ -1,11 +1,12 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { CheckCircle2, PlayCircle, Users } from "lucide-react";
+import { CheckCircle2, PlayCircle, Quote, Users } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { JsonLd } from "@/components/marketing/json-ld";
 import { AnimatedTagline } from "@/components/marketing/animated-tagline";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 
 export const metadata: Metadata = {
   title: "Zero2Brands - Build a Clothing Brand From Zero",
@@ -62,131 +63,164 @@ export default async function HomePage() {
       <section className="relative overflow-hidden bg-brand-hero">
         <div className="bg-brand-dots absolute inset-0" />
         <div className="relative mx-auto flex max-w-360 flex-col items-center px-4 py-20 text-center sm:px-6 sm:py-28 lg:py-32 lg:px-8">
-          <span className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium tracking-wide text-white/80 uppercase">
-            For Bangladeshi entrepreneurs
-          </span>
-          <h1 className="mt-6 max-w-3xl text-balance text-4xl font-semibold text-white sm:text-5xl lg:text-6xl">
-            <AnimatedTagline />
-          </h1>
-          <p className="mt-6 max-w-xl text-balance text-lg text-white/75">
-            {course?.subtitle ??
-              "A real roadmap and a real community for entrepreneurs starting a clothing business in Bangladesh. Lifetime access, step by step."}
-          </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button
-              size="lg"
-              className="h-12 bg-accent px-8 text-base font-medium text-accent-foreground hover:bg-accent/90"
-              render={<Link href="/course">See the full course</Link>}
-            />
-            <Button
-              size="lg"
-              variant="outline"
-              className="h-12 border-white/25 bg-white/5 px-8 text-base text-white hover:bg-white/10 hover:text-white"
-              render={<Link href="/batches">Join a live batch</Link>}
-            />
-          </div>
-          {course ? (
-            <p className="mt-6 text-sm text-white/60">
-              ৳{course.price_bdt.toLocaleString()}
-              {course.compare_at_price_bdt ? (
-                <span className="ml-2 line-through">
-                  ৳{course.compare_at_price_bdt.toLocaleString()}
-                </span>
-              ) : null}{" "}
-              &middot; lifetime access
+          <Reveal>
+            <span className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium tracking-wide text-white/80 uppercase">
+              For Bangladeshi entrepreneurs
+            </span>
+          </Reveal>
+
+          <Reveal delay={0.08} className="w-full">
+            <h1 className="mx-auto mt-6 max-w-3xl text-balance text-4xl font-semibold text-white sm:text-5xl lg:text-6xl">
+              <AnimatedTagline />
+            </h1>
+          </Reveal>
+
+          <Reveal delay={0.16} className="w-full">
+            <p className="mx-auto mt-6 max-w-xl text-balance text-lg text-white/75">
+              {course?.subtitle ??
+                "A real roadmap and a real community for entrepreneurs starting a clothing business in Bangladesh. Lifetime access, step by step."}
             </p>
+          </Reveal>
+
+          <Reveal delay={0.24}>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Button
+                size="lg"
+                className="h-12 bg-accent px-8 text-base font-medium text-accent-foreground transition-transform duration-200 hover:bg-accent/90 active:scale-[0.98]"
+                render={<Link href="/course">See the full course</Link>}
+              />
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-12 border-white/25 bg-white/5 px-8 text-base text-white transition-colors duration-200 hover:bg-white/10 hover:text-white"
+                render={<Link href="/batches">Join a live batch</Link>}
+              />
+            </div>
+          </Reveal>
+
+          {course ? (
+            <Reveal delay={0.32}>
+              <p className="mt-6 text-sm text-white/60">
+                ৳{course.price_bdt.toLocaleString()}
+                {course.compare_at_price_bdt ? (
+                  <span className="ml-2 line-through">
+                    ৳{course.compare_at_price_bdt.toLocaleString()}
+                  </span>
+                ) : null}{" "}
+                &middot; lifetime access
+              </p>
+            </Reveal>
           ) : null}
         </div>
       </section>
 
       {/* Pillars */}
       <section className="mx-auto max-w-360 px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-2xl font-semibold sm:text-3xl">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <span className="text-xs font-semibold uppercase tracking-wide text-accent">
+            Why Zero2Brands
+          </span>
+          <h2 className="mt-3 text-balance text-2xl font-semibold sm:text-3xl">
             Why entrepreneurs choose Zero2Brands
           </h2>
-        </div>
-        <div className="mt-10 grid gap-6 sm:grid-cols-3">
+        </Reveal>
+        <RevealGroup className="mt-10 grid gap-6 sm:grid-cols-3">
           {PILLARS.map((p) => (
-            <div
-              key={p.title}
-              className="rounded-2xl border border-border bg-card p-6 transition-colors hover:border-accent/40"
-            >
-              <div className="flex size-11 items-center justify-center rounded-full bg-accent/10">
-                <p.icon className="size-5 text-accent" strokeWidth={1.75} />
+            <RevealItem key={p.title}>
+              <div className="group h-full rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg">
+                <div className="flex size-11 items-center justify-center rounded-full bg-accent/10 transition-colors duration-300 group-hover:bg-accent/15">
+                  <p.icon className="size-5 text-accent" strokeWidth={1.75} />
+                </div>
+                <h3 className="mt-4 text-lg font-semibold">{p.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {p.body}
+                </p>
               </div>
-              <h3 className="mt-4 text-lg font-semibold">{p.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {p.body}
-              </p>
-            </div>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </section>
 
       {/* Testimonials */}
       {testimonials && testimonials.length > 0 ? (
         <section className="bg-muted/60 py-16 sm:py-20 lg:py-24">
           <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-2xl font-semibold sm:text-3xl">
+            <Reveal className="mx-auto max-w-2xl text-center">
+              <span className="text-xs font-semibold uppercase tracking-wide text-accent">
+                Student stories
+              </span>
+              <h2 className="mt-3 text-balance text-2xl font-semibold sm:text-3xl">
                 What students say
               </h2>
               <p className="mt-3 text-muted-foreground">
                 Real entrepreneurs, real businesses, built with this course.
               </p>
-            </div>
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
+            </Reveal>
+            <RevealGroup className="mt-10 grid gap-6 md:grid-cols-3">
               {testimonials.map((t) => (
-                <Card key={t.name} className="h-full">
-                  <CardContent className="flex h-full flex-col">
-                    <p className="text-sm leading-relaxed text-foreground">
-                      &ldquo;{t.quote}&rdquo;
-                    </p>
-                    <div className="mt-5 flex items-center gap-3 pt-1">
-                      <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-                        {t.name.charAt(0)}
+                <RevealItem key={t.name}>
+                  <Card className="h-full transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg">
+                    <CardContent className="flex h-full flex-col">
+                      <Quote
+                        className="size-5 shrink-0 text-accent/40"
+                        strokeWidth={1.75}
+                        aria-hidden="true"
+                      />
+                      <p className="mt-3 text-sm leading-relaxed text-foreground">
+                        &ldquo;{t.quote}&rdquo;
+                      </p>
+                      <div className="mt-auto flex items-center gap-3 pt-5">
+                        <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                          {t.name.charAt(0)}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">{t.name}</p>
+                          {t.business_name ? (
+                            <p className="text-xs text-muted-foreground">
+                              {t.business_name}
+                            </p>
+                          ) : null}
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium">{t.name}</p>
-                        {t.business_name ? (
-                          <p className="text-xs text-muted-foreground">
-                            {t.business_name}
-                          </p>
-                        ) : null}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
           </div>
         </section>
       ) : null}
 
       {/* Final CTA */}
       <section className="relative overflow-hidden bg-brand-hero py-16 sm:py-20 lg:py-24">
+        <div className="bg-brand-dots absolute inset-0" />
         <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <h2 className="text-balance text-2xl font-semibold text-white sm:text-3xl">
-            Ready to start building?
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-white/70">
-            Get the full roadmap, the community and lifetime access in one
-            purchase.
-          </p>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <Button
-              size="lg"
-              className="h-12 bg-accent px-8 text-base font-medium text-accent-foreground hover:bg-accent/90"
-              render={<Link href="/course">See the full course</Link>}
-            />
-            <Button
-              size="lg"
-              variant="outline"
-              className="h-12 border-white/25 bg-white/5 px-8 text-base text-white hover:bg-white/10 hover:text-white"
-              render={<Link href="/batches">Join a live batch</Link>}
-            />
-          </div>
+          <Reveal>
+            <h2 className="text-balance text-2xl font-semibold text-white sm:text-3xl">
+              Ready to start building?
+            </h2>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <p className="mx-auto mt-3 max-w-xl text-white/70">
+              Get the full roadmap, the community and lifetime access in one
+              purchase.
+            </p>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <Button
+                size="lg"
+                className="h-12 bg-accent px-8 text-base font-medium text-accent-foreground transition-transform duration-200 hover:bg-accent/90 active:scale-[0.98]"
+                render={<Link href="/course">See the full course</Link>}
+              />
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-12 border-white/25 bg-white/5 px-8 text-base text-white transition-colors duration-200 hover:bg-white/10 hover:text-white"
+                render={<Link href="/batches">Join a live batch</Link>}
+              />
+            </div>
+          </Reveal>
         </div>
       </section>
     </>

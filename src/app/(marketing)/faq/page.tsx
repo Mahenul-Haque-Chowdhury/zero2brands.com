@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { JsonLd } from "@/components/marketing/json-ld";
+import { Reveal } from "@/components/motion/reveal";
 
 export const metadata: Metadata = { title: "FAQ" };
 
@@ -31,19 +32,22 @@ export default async function FaqPage() {
           })),
         }}
       />
-      <p className="text-sm font-semibold uppercase tracking-wide text-accent">
-        Support
-      </p>
-      <h1 className="mt-2 text-balance text-3xl font-semibold sm:text-4xl">
-        Frequently asked questions
-      </h1>
-      <p className="mt-3 text-muted-foreground">
-        Can&apos;t find what you&apos;re looking for? Reach out on our
-        contact page.
-      </p>
+      <Reveal>
+        <span className="text-xs font-semibold uppercase tracking-wide text-accent">
+          Support
+        </span>
+        <h1 className="mt-3 text-balance text-3xl font-semibold sm:text-4xl">
+          Frequently asked questions
+        </h1>
+        <p className="mt-3 text-muted-foreground">
+          Can&apos;t find what you&apos;re looking for? Reach out on our
+          contact page.
+        </p>
+      </Reveal>
 
       {faqs && faqs.length > 0 ? (
-        <Accordion multiple={false} className="mt-10">
+        <Reveal delay={0.1}>
+          <Accordion multiple={false} className="mt-10">
           {faqs.map((f, i) => (
             <AccordionItem key={i} value={`faq-${i}`}>
               <AccordionTrigger className="text-left font-medium">
@@ -53,10 +57,11 @@ export default async function FaqPage() {
                 {f.answer}
               </AccordionContent>
             </AccordionItem>
-          ))}
-        </Accordion>
+            ))}
+          </Accordion>
+        </Reveal>
       ) : (
-        <div className="mt-10 rounded-xl border border-dashed border-border bg-muted/30 px-6 py-16 text-center">
+        <div className="mt-10 rounded-2xl border border-dashed border-border bg-muted/30 px-6 py-16 text-center">
           <p className="text-muted-foreground">
             Questions are being added soon.
           </p>
