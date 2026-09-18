@@ -4,14 +4,14 @@ export const metadata: Metadata = { title: "Privacy Policy" };
 
 export default function PrivacyPage() {
   return (
-    <div className="mx-auto max-w-2xl px-4 py-16">
-      <h1 className="text-3xl font-semibold">Privacy Policy</h1>
+    <div className="mx-auto max-w-prose px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+      <h1 className="text-3xl font-semibold sm:text-4xl">Privacy Policy</h1>
       <p className="mt-2 text-sm text-muted-foreground">
-        Draft — pending final review by the business owner. Last updated{" "}
+        Draft, pending final review by the business owner. Last updated{" "}
         {new Date().toLocaleDateString()}.
       </p>
 
-      <div className="prose mt-8 max-w-none text-sm">
+      <div className="prose prose-neutral mt-8 max-w-none text-sm leading-relaxed text-muted-foreground prose-headings:font-heading prose-headings:text-foreground">
         <h2>What we collect</h2>
         <p>
           When you create an account we collect your name, email address,
@@ -36,7 +36,7 @@ export default function PrivacyPage() {
         <p>
           Course videos are protected with time-limited, signed access
           links tied to your account and device session. Do not share
-          these links — they expire automatically after a few hours and
+          these links, they expire automatically after a few hours and
           are logged against your account.
         </p>
 
@@ -73,9 +73,9 @@ export default function PrivacyPage() {
 
         <h2>Contact</h2>
         <p>
-          Zero2Brands · support@zero2brands.com
+          Zero2Brands &middot; support@zero2brands.com
           <br />
-          [Business address — pending from owner]
+          [Business address, pending from owner]
         </p>
       </div>
     </div>

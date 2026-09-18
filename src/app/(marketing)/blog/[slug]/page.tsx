@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { ArrowLeft } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { JsonLd } from "@/components/marketing/json-ld";
 
@@ -43,7 +45,7 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   return (
-    <article className="mx-auto max-w-2xl px-4 py-16" lang={post.lang}>
+    <article className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24" lang={post.lang}>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -53,14 +55,23 @@ export default async function BlogPostPage({
           author: { "@type": "Organization", name: "Zero2Brands" },
         }}
       />
-      <h1 className="text-3xl font-semibold">{post.title}</h1>
+      <Link
+        href="/blog"
+        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <ArrowLeft className="size-4" />
+        Back to blog
+      </Link>
+      <h1 className="mt-6 text-balance text-3xl font-semibold font-heading sm:text-4xl">
+        {post.title}
+      </h1>
       {post.published_at ? (
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="mt-3 text-sm text-muted-foreground">
           {new Date(post.published_at).toLocaleDateString()}
         </p>
       ) : null}
       <div
-        className="prose mt-8 max-w-none"
+        className="prose prose-neutral mt-10 max-w-none text-foreground prose-headings:font-heading prose-a:text-primary"
         dangerouslySetInnerHTML={{ __html: post.content_html ?? "" }}
       />
     </article>

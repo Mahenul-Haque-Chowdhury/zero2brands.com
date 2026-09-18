@@ -1,3 +1,4 @@
+import { CheckCircle2, XCircle } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export default async function VerifyCertificatePage({
@@ -16,13 +17,33 @@ export default async function VerifyCertificatePage({
     .eq("certificate_number", certificateNumber)
     .maybeSingle();
 
+  const verified = Boolean(cert && !cert.is_revoked);
+
   return (
-    <div className="mx-auto max-w-lg px-4 py-24 text-center">
-      {cert && !cert.is_revoked ? (
+    <div className="mx-auto flex min-h-[70vh] max-w-lg flex-col items-center justify-center px-4 py-24 text-center">
+      <span
+        className={
+          verified
+            ? "flex size-14 items-center justify-center rounded-full bg-accent/15 text-accent"
+            : "flex size-14 items-center justify-center rounded-full bg-destructive/10 text-destructive"
+        }
+      >
+        {verified ? (
+          <CheckCircle2 className="size-7" />
+        ) : (
+          <XCircle className="size-7" />
+        )}
+      </span>
+
+      {verified && cert ? (
         <>
-          <h1 className="text-2xl font-semibold">Certificate Verified</h1>
-          <div className="mt-6 rounded-lg border p-6">
-            <p className="text-lg font-medium">{cert.profiles?.full_name}</p>
+          <h1 className="mt-5 text-2xl font-semibold">
+            Certificate verified
+          </h1>
+          <div className="mt-6 w-full rounded-xl border border-border bg-card p-6 shadow-sm">
+            <p className="text-lg font-medium text-foreground">
+              {cert.profiles?.full_name}
+            </p>
             <p className="mt-1 text-muted-foreground">{cert.courses?.title}</p>
             <p className="mt-4 text-sm text-muted-foreground">
               Issued {new Date(cert.issued_at).toLocaleDateString()}
@@ -34,7 +55,9 @@ export default async function VerifyCertificatePage({
         </>
       ) : (
         <>
-          <h1 className="text-2xl font-semibold">Certificate Not Found</h1>
+          <h1 className="mt-5 text-2xl font-semibold">
+            Certificate not found
+          </h1>
           <p className="mt-2 text-muted-foreground">
             This certificate number could not be verified.
           </p>

@@ -4,14 +4,14 @@ export const metadata: Metadata = { title: "Terms of Service" };
 
 export default function TermsPage() {
   return (
-    <div className="mx-auto max-w-2xl px-4 py-16">
-      <h1 className="text-3xl font-semibold">Terms of Service</h1>
+    <div className="mx-auto max-w-prose px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+      <h1 className="text-3xl font-semibold sm:text-4xl">Terms of Service</h1>
       <p className="mt-2 text-sm text-muted-foreground">
-        Draft — pending final review by the business owner. Last updated{" "}
+        Draft, pending final review by the business owner. Last updated{" "}
         {new Date().toLocaleDateString()}.
       </p>
 
-      <div className="prose mt-8 max-w-none text-sm">
+      <div className="prose prose-neutral mt-8 max-w-none text-sm leading-relaxed text-muted-foreground prose-headings:font-heading prose-headings:text-foreground">
         <h2>1. The product</h2>
         <p>
           Zero2Brands sells access to a recorded course (lifetime access, no
@@ -25,7 +25,8 @@ export default function TermsPage() {
           Your account is for your personal use only. Sharing your login,
           course videos, downloadable resources, or any other course
           content with anyone who has not purchased access is strictly
-          prohibited. <strong>
+          prohibited.{" "}
+          <strong>
             Violating this ends your access immediately, without a refund.
           </strong>{" "}
           We use signed, time-limited access tokens and a two-device
@@ -63,7 +64,7 @@ export default function TermsPage() {
         </p>
 
         <h2>7. Contact</h2>
-        <p>Zero2Brands · support@zero2brands.com</p>
+        <p>Zero2Brands &middot; support@zero2brands.com</p>
       </div>
     </div>
   );

@@ -31,14 +31,14 @@ export function LeadForm({ source }: { source: string }) {
 
   if (done) {
     return (
-      <p className="rounded-lg border p-4 text-sm text-muted-foreground">
-        Thanks — we received your request and will be in touch soon.
+      <p className="rounded-lg border border-accent/30 bg-accent/10 p-4 text-sm text-foreground">
+        Thanks, we received your request and will be in touch soon.
       </p>
     );
   }
 
   return (
-    <form action={handleSubmit} className="flex flex-col gap-3">
+    <form action={handleSubmit} className="flex flex-col gap-4">
       <div className="grid gap-2">
         <Label htmlFor="fullName">Full name</Label>
         <Input id="fullName" name="fullName" required />
@@ -56,8 +56,12 @@ export function LeadForm({ source }: { source: string }) {
         <Textarea id="message" name="message" rows={3} />
       </div>
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
-      <Button type="submit" disabled={pending} className="w-fit">
-        {pending ? "Submitting…" : "Submit"}
+      <Button
+        type="submit"
+        disabled={pending}
+        className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-fit"
+      >
+        {pending ? "Submitting..." : "Submit"}
       </Button>
     </form>
   );
