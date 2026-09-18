@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ShieldCheck } from "lucide-react";
 
 export const metadata = { title: "Abuse watchlist" };
 
@@ -26,54 +27,75 @@ export default async function AbuseWatchlistPage() {
     .order("created_at", { ascending: false })
     .limit(100);
 
+  const rows = flags ?? [];
+
   return (
     <div>
-      <h1 className="mb-2 text-2xl font-semibold">Abuse watchlist</h1>
-      <p className="mb-6 text-sm text-muted-foreground">
-        Flagged by the nightly abuse-detection job. Nothing here is
-        auto-banned — review each case before taking action.
-      </p>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>User ID</TableHead>
-            <TableHead>Reasons</TableHead>
-            <TableHead>Flagged</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {(flags ?? []).map((f) => {
-            const details = f.after as {
-              reasons?: string[];
-              distinctIps?: number;
-              distinctDevices?: number;
-              tokenRequests?: number;
-            } | null;
-            return (
-              <TableRow key={f.id}>
-                <TableCell className="font-mono text-xs">{f.entity_id}</TableCell>
-                <TableCell className="text-sm">
-                  {details?.reasons?.join("; ") ?? "—"}
-                  <div className="text-xs text-muted-foreground">
-                    {details?.distinctIps ?? 0} IPs · {details?.distinctDevices ?? 0}{" "}
-                    devices · {details?.tokenRequests ?? 0} token requests
+      <div className="mb-5">
+        <h1 className="font-sans text-xl font-semibold">Abuse watchlist</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Flagged by the nightly abuse-detection job. Nothing here is
+          auto-banned, review each case before taking action.
+        </p>
+      </div>
+
+      <div className="overflow-x-auto rounded-lg border border-border bg-card">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                User ID
+              </TableHead>
+              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Reasons
+              </TableHead>
+              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Flagged
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((f) => {
+              const details = f.after as {
+                reasons?: string[];
+                distinctIps?: number;
+                distinctDevices?: number;
+                tokenRequests?: number;
+              } | null;
+              return (
+                <TableRow key={f.id}>
+                  <TableCell className="font-mono text-xs text-muted-foreground">
+                    {f.entity_id}
+                  </TableCell>
+                  <TableCell className="text-sm">
+                    {details?.reasons?.join("; ") ?? "-"}
+                    <div className="text-xs text-muted-foreground">
+                      {details?.distinctIps ?? 0} IPs &middot; {details?.distinctDevices ?? 0}{" "}
+                      devices &middot; {details?.tokenRequests ?? 0} token requests
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-xs text-muted-foreground">
+                    {new Date(f.created_at).toLocaleString()}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+            {rows.length === 0 && (
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={3} className="p-0">
+                  <div className="flex flex-col items-center gap-2 py-12 text-center">
+                    <ShieldCheck className="size-8 text-muted-foreground/40" />
+                    <p className="text-sm font-medium">Nothing flagged</p>
+                    <p className="text-xs text-muted-foreground">
+                      The nightly job has not raised anything for review.
+                    </p>
                   </div>
                 </TableCell>
-                <TableCell className="text-xs text-muted-foreground">
-                  {new Date(f.created_at).toLocaleString()}
-                </TableCell>
               </TableRow>
-            );
-          })}
-          {(!flags || flags.length === 0) && (
-            <TableRow>
-              <TableCell colSpan={3} className="text-sm text-muted-foreground">
-                Nothing flagged.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { CheckCircle2, ShieldAlert } from "lucide-react";
 
 export const metadata = { title: "Reports" };
 
@@ -32,76 +33,106 @@ export default async function AdminReportsPage() {
     .order("created_at", { ascending: false });
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Reports</h1>
-        <Link href="/admin/reports/watchlist" className="text-sm underline">
+        <div>
+          <h1 className="font-sans text-xl font-semibold">Reports</h1>
+          <p className="text-sm text-muted-foreground">
+            Payment reconciliation and moderation, at a glance.
+          </p>
+        </div>
+        <Link
+          href="/admin/reports/watchlist"
+          className="text-sm font-medium text-primary hover:underline"
+        >
           Abuse watchlist
         </Link>
       </div>
 
-      <Card>
+      <Card size="sm">
         <CardHeader>
-          <CardTitle>Reconciliation — payments stuck processing</CardTitle>
+          <CardTitle className="font-sans text-sm">
+            Reconciliation, payments stuck processing
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {stuckPayments && stuckPayments.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Invoice</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Created</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {stuckPayments.map((p) => (
-                  <TableRow key={p.id}>
-                    <TableCell className="font-mono text-xs">
-                      {p.merchant_invoice_number}
-                    </TableCell>
-                    <TableCell>৳{p.amount_bdt.toLocaleString()}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground">
-                      {new Date(p.created_at).toLocaleString()}
-                    </TableCell>
+            <div className="overflow-x-auto rounded-md border border-border">
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Invoice
+                    </TableHead>
+                    <TableHead className="text-right text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Amount
+                    </TableHead>
+                    <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Created
+                    </TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {stuckPayments.map((p) => (
+                    <TableRow key={p.id}>
+                      <TableCell className="font-mono text-xs text-muted-foreground">
+                        {p.merchant_invoice_number}
+                      </TableCell>
+                      <TableCell className="text-right tabular-nums">
+                        &#2547;{p.amount_bdt.toLocaleString()}
+                      </TableCell>
+                      <TableCell className="text-xs text-muted-foreground">
+                        {new Date(p.created_at).toLocaleString()}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           ) : (
-            <p className="text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 py-6 text-sm text-muted-foreground">
+              <CheckCircle2 className="size-4 text-accent" />
               None right now. The reconciliation cron runs every 15 minutes.
-            </p>
+            </div>
           )}
         </CardContent>
       </Card>
 
-      <Card>
+      <Card size="sm">
         <CardHeader>
-          <CardTitle>Moderation queue</CardTitle>
+          <CardTitle className="font-sans text-sm">Moderation queue</CardTitle>
         </CardHeader>
         <CardContent>
           {moderationReports && moderationReports.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Reason</TableHead>
-                  <TableHead>Reported</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {moderationReports.map((r) => (
-                  <TableRow key={r.id}>
-                    <TableCell>{r.reason}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground">
-                      {new Date(r.created_at).toLocaleString()}
-                    </TableCell>
+            <div className="overflow-x-auto rounded-md border border-border">
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Reason
+                    </TableHead>
+                    <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Reported
+                    </TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {moderationReports.map((r) => (
+                    <TableRow key={r.id}>
+                      <TableCell>{r.reason}</TableCell>
+                      <TableCell className="text-xs text-muted-foreground">
+                        {new Date(r.created_at).toLocaleString()}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           ) : (
-            <p className="text-sm text-muted-foreground">No open reports.</p>
+            <div className="flex items-center gap-2 py-6 text-sm text-muted-foreground">
+              <ShieldAlert className="size-4 text-muted-foreground/50" />
+              No open reports.
+            </div>
           )}
         </CardContent>
       </Card>
