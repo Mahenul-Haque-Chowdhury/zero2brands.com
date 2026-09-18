@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { BuyButton } from "@/components/marketing/buy-button";
 import { JsonLd } from "@/components/marketing/json-ld";
+import { ViewContentTracker } from "@/components/marketing/view-content-tracker";
 
 export async function generateMetadata(): Promise<Metadata> {
   const admin = createAdminClient();
@@ -73,6 +74,7 @@ export default async function CourseSalesPage() {
 
   return (
     <>
+      <ViewContentTracker contentId={course.id} contentName={course.title} />
       <JsonLd
         data={{
           "@context": "https://schema.org",

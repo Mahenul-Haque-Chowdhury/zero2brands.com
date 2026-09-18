@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
+import { fireMetaPixelEvent } from "@/lib/analytics/meta-pixel";
+import { fireGa4Event } from "@/lib/analytics/ga4";
 
 export function BuyButton({
   productId,
@@ -39,6 +41,14 @@ export function BuyButton({
         toast.error(data.error ?? "Could not start checkout.");
         return;
       }
+
+      // Shared event_id with the server-side CAPI Purchase event fired
+      // from the grant path uses the invoice number, so this
+      // InitiateCheckout uses it too for consistent Meta reporting.
+      fireMetaPixelEvent("InitiateCheckout", data.invoiceNumber, {
+        content_ids: [productId],
+      });
+      fireGa4Event("begin_checkout", { product_id: productId });
 
       window.location.href = data.bkashURL;
     });

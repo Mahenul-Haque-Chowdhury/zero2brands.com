@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSessionHeartbeat } from "@/hooks/use-session-heartbeat";
 import { logoutAction } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
+import { RegistrationTracker } from "@/components/shared/registration-tracker";
 import type { Database } from "@/types/database";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
@@ -29,6 +30,7 @@ export function DashboardShell({
 
   return (
     <div className="flex min-h-screen flex-col">
+      {profile ? <RegistrationTracker userId={profile.id} /> : null}
       <header className="flex items-center justify-between border-b px-4 py-3">
         <Link href="/dashboard" className="font-semibold tracking-tight">
           Zero2Brands

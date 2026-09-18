@@ -5,34 +5,34 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { submitLeadAction } from "@/lib/leads/actions";
-import { fireMetaPixelEvent } from "@/lib/analytics/meta-pixel";
+import { submitStoreRequestAction } from "./actions";
 import { fireGa4Event } from "@/lib/analytics/ga4";
+import type { Database } from "@/types/database";
 
-export function LeadForm({ source }: { source: string }) {
+type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+
+export function StoreRequestForm({ profile }: { profile: Profile }) {
   const [pending, startTransition] = useTransition();
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   function handleSubmit(formData: FormData) {
-    formData.set("source", source);
     startTransition(async () => {
-      const result = await submitLeadAction(formData);
+      const result = await submitStoreRequestAction(formData);
       if ("error" in result) {
         setError(result.error);
         return;
       }
       setError(null);
       setDone(true);
-      fireMetaPixelEvent("Lead", `lead_${source}_${Date.now()}`, { content_name: source });
-      fireGa4Event("generate_lead", { source });
+      fireGa4Event("grayvally_cta_submission");
     });
   }
 
   if (done) {
     return (
       <p className="rounded-lg border p-4 text-sm text-muted-foreground">
-        Thanks — we received your request and will be in touch soon.
+        Thanks — GrayVally will reach out to you soon.
       </p>
     );
   }
@@ -40,24 +40,33 @@ export function LeadForm({ source }: { source: string }) {
   return (
     <form action={handleSubmit} className="flex flex-col gap-3">
       <div className="grid gap-2">
-        <Label htmlFor="fullName">Full name</Label>
-        <Input id="fullName" name="fullName" required />
+        <Label htmlFor="businessName">Business name</Label>
+        <Input
+          id="businessName"
+          name="businessName"
+          defaultValue={profile.business_name ?? ""}
+          required
+        />
       </div>
       <div className="grid gap-2">
-        <Label htmlFor="phone">Phone number</Label>
-        <Input id="phone" name="phone" type="tel" placeholder="01XXXXXXXXX" required />
+        <Label htmlFor="productCategory">Product category</Label>
+        <Input
+          id="productCategory"
+          name="productCategory"
+          defaultValue={profile.business_category ?? ""}
+        />
       </div>
       <div className="grid gap-2">
-        <Label htmlFor="email">Email (optional)</Label>
-        <Input id="email" name="email" type="email" />
+        <Label htmlFor="budgetRange">Budget range</Label>
+        <Input id="budgetRange" name="budgetRange" placeholder="e.g. 20,000–50,000 BDT" />
       </div>
       <div className="grid gap-2">
-        <Label htmlFor="message">Message (optional)</Label>
+        <Label htmlFor="message">Anything else?</Label>
         <Textarea id="message" name="message" rows={3} />
       </div>
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
       <Button type="submit" disabled={pending} className="w-fit">
-        {pending ? "Submitting…" : "Submit"}
+        {pending ? "Submitting…" : "Submit request"}
       </Button>
     </form>
   );
