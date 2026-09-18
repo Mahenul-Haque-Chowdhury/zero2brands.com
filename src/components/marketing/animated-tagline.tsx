@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { cn } from "cn";
 
 const LINES = [
   {
@@ -15,6 +16,7 @@ const LINES = [
     // Bangla line is set a notch smaller to read as the same size.
     fontSize: "1em",
     lineHeight: 1.1,
+    className: "",
   },
   {
     text: "শূন্য থেকে নিজের ক্লোদিং ব্র্যান্ড তৈরী করুন আমাদের সাথে",
@@ -25,6 +27,12 @@ const LINES = [
     // matras sit closer to the line above/below at the same ratio, so this
     // line reads as cramped without a small bump.
     lineHeight: 1.35,
+    // On narrow phones this text is short enough to fit 2 lines while the
+    // longer English sentence wraps to 3, which looks mismatched inside
+    // the fixed-height box. Capping the width on mobile only forces a 3rd
+    // line there too; sm: and up removes the cap since both languages
+    // already land on a similar line count at those widths.
+    className: "max-w-[12rem] sm:max-w-none",
   },
 ];
 
@@ -85,6 +93,7 @@ export function AnimatedTagline({ className }: { className?: string }) {
           key={line.lang}
           lang={line.lang}
           aria-hidden="true"
+          className={cn("mx-auto", line.className)}
           style={{
             gridArea: "1 / 1",
             opacity: i === index && visible ? 1 : 0,
