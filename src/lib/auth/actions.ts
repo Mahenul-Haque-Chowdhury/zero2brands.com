@@ -19,6 +19,9 @@ import { checkRateLimit, limiters } from "@/lib/ratelimit/index";
 import { sendLoginOtp, verifyLoginOtp } from "@/lib/auth/otp";
 
 export type ActionResult = { error: string } | { success: true };
+export type SignupResult =
+  | { error: string }
+  | { success: true; needsEmailConfirmation: boolean };
 
 async function getClientIp(): Promise<string> {
   const h = await headers();
@@ -30,9 +33,9 @@ async function getClientIp(): Promise<string> {
 }
 
 export async function signupAction(
-  _prev: ActionResult | null,
+  _prev: SignupResult | null,
   formData: FormData
-): Promise<ActionResult> {
+): Promise<SignupResult> {
   const ip = await getClientIp();
   const rl = await checkRateLimit(limiters.signupPerIp, ip);
   if (!rl.success) {
@@ -81,12 +84,17 @@ export async function signupAction(
   // effort here; onboarding also collects it if this update races the
   // trigger.
   const { data: userRes } = await supabase.auth.getUser();
-  if (userRes.user) {
-    await supabase
-      .from("profiles")
-      .update({ phone })
-      .eq("id", userRes.user.id);
+
+  // With "Confirm sign up" enabled in Supabase, signUp() succeeds but
+  // returns no session until the user clicks the emailed confirmation
+  // link — getUser() returns null in that case. Redirecting to /onboarding
+  // then would just bounce them to /login with no explanation, so surface
+  // a "check your email" state instead of assuming a session exists.
+  if (!userRes.user) {
+    return { success: true, needsEmailConfirmation: true };
   }
+
+  await supabase.from("profiles").update({ phone }).eq("id", userRes.user.id);
 
   redirect("/onboarding");
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { Mail } from "lucide-react";
 import { Loader2 } from "lucide-react";
 import { signupAction } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,23 @@ import { GoogleSignInButton } from "@/components/shared/google-sign-in-button";
 
 export function SignupForm() {
   const [state, formAction, pending] = useActionState(signupAction, null);
+
+  if (state && "success" in state && state.needsEmailConfirmation) {
+    return (
+      <div className="flex flex-col items-center gap-3 py-2 text-center">
+        <span className="flex size-10 items-center justify-center rounded-full bg-accent/10 text-accent">
+          <Mail className="size-5" />
+        </span>
+        <p className="text-sm font-medium text-foreground">
+          Check your inbox
+        </p>
+        <p className="text-sm text-muted-foreground">
+          We sent a confirmation link to your email. Click it to activate
+          your account, then come back and log in.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>
