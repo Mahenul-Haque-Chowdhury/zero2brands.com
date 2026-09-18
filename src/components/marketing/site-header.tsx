@@ -24,7 +24,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 bg-primary">
       <div className="mx-auto flex h-20 max-w-360 items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center" aria-label="Zero2Brands home">
-          <Wordmark size="sm" />
+          <Wordmark size="md" />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
@@ -54,7 +54,8 @@ export function SiteHeader() {
             render={<Link href="/login">Log in</Link>}
           />
           <Button
-            className="bg-accent text-base text-accent-foreground hover:bg-accent/90"
+            size="lg"
+            className="h-11 bg-accent px-6 text-base text-accent-foreground hover:bg-accent/90"
             render={<Link href="/course">Enroll now</Link>}
           />
         </div>
