@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { UserPlus } from "lucide-react";
 
 export const metadata = { title: "Leads" };
 
@@ -18,31 +19,61 @@ export default async function AdminLeadsPage() {
     .order("created_at", { ascending: false })
     .limit(100);
 
+  const rows = leads ?? [];
+
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-semibold">Leads</h1>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Phone</TableHead>
-            <TableHead>Source</TableHead>
-            <TableHead>Date</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {(leads ?? []).map((l) => (
-            <TableRow key={l.id}>
-              <TableCell>{l.full_name ?? "—"}</TableCell>
-              <TableCell>{l.phone ?? "—"}</TableCell>
-              <TableCell>{l.source ?? "—"}</TableCell>
-              <TableCell className="text-xs text-muted-foreground">
-                {new Date(l.created_at).toLocaleDateString()}
-              </TableCell>
+      <div className="mb-5">
+        <h1 className="font-sans text-xl font-semibold">Leads</h1>
+        <p className="text-sm text-muted-foreground">
+          Latest 100 leads captured across marketing forms.
+        </p>
+      </div>
+
+      <div className="overflow-x-auto rounded-lg border border-border bg-card">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Name
+              </TableHead>
+              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Phone
+              </TableHead>
+              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Source
+              </TableHead>
+              <TableHead className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Date
+              </TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {rows.map((l) => (
+              <TableRow key={l.id}>
+                <TableCell className="max-w-48 truncate" title={l.full_name ?? undefined}>
+                  {l.full_name ?? "-"}
+                </TableCell>
+                <TableCell className="text-muted-foreground">{l.phone ?? "-"}</TableCell>
+                <TableCell className="text-muted-foreground">{l.source ?? "-"}</TableCell>
+                <TableCell className="text-xs text-muted-foreground">
+                  {new Date(l.created_at).toLocaleDateString()}
+                </TableCell>
+              </TableRow>
+            ))}
+            {rows.length === 0 && (
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={4} className="p-0">
+                  <div className="flex flex-col items-center gap-2 py-12 text-center">
+                    <UserPlus className="size-8 text-muted-foreground/40" />
+                    <p className="text-sm font-medium">No leads yet</p>
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }
