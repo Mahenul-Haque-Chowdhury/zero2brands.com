@@ -1,15 +1,15 @@
 import { requireStaff } from "@/lib/auth/guards";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { startOfToday as getStartOfToday, daysAgo, minutesAgo } from "@/lib/utils/dates";
 
 export const metadata = { title: "Admin overview" };
 
 export default async function AdminOverviewPage() {
   const { supabase } = await requireStaff();
 
-  const startOfToday = new Date();
-  startOfToday.setHours(0, 0, 0, 0);
-  const startOfWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-  const startOfMonth = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  const startOfToday = getStartOfToday();
+  const startOfWeek = daysAgo(7);
+  const startOfMonth = daysAgo(30);
 
   const [
     revenueToday,
@@ -45,7 +45,7 @@ export default async function AdminOverviewPage() {
       .eq("status", "processing")
       .lt(
         "created_at",
-        new Date(Date.now() - 10 * 60 * 1000).toISOString()
+        minutesAgo(10).toISOString()
       ),
     supabase
       .from("leads")

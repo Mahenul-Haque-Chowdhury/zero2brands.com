@@ -38,7 +38,13 @@ export function buildSignedEmbedUrl(videoId: string): {
   return { url, expiresAt: new Date(expires * 1000).toISOString() };
 }
 
-export function buildSignedDirectPlayUrl(videoId: string, resolution = "720p"): {
+/**
+ * Direct HLS playlist URL, signed the same way as the embed token. Not
+ * currently used by the player (which uses the iframe embed exclusively
+ * per Phase 5.3 — "do not build a custom HLS player"), kept available for
+ * any future custom-player need.
+ */
+export function buildSignedDirectPlayUrl(videoId: string): {
   url: string;
   expiresAt: string;
 } {

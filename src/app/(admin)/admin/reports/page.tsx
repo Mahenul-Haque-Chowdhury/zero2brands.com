@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/auth/guards";
+import { minutesAgo } from "@/lib/utils/dates";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -14,7 +15,7 @@ export const metadata = { title: "Reports" };
 export default async function AdminReportsPage() {
   const { supabase } = await requireAdmin();
 
-  const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+  const tenMinutesAgo = minutesAgo(10).toISOString();
 
   const { data: stuckPayments } = await supabase
     .from("payments")

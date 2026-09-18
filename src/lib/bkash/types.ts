@@ -9,7 +9,7 @@ export interface BkashGrantTokenResponse {
   statusMessage: string;
 }
 
-export interface BkashRefreshTokenResponse extends BkashGrantTokenResponse {}
+export type BkashRefreshTokenResponse = BkashGrantTokenResponse;
 
 export interface BkashCreatePaymentRequest {
   mode: "0011";

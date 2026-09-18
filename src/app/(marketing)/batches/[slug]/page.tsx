@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { BuyButton } from "@/components/marketing/buy-button";
 import { Badge } from "@/components/ui/badge";
+import { nowMs } from "@/lib/utils/dates";
 
 export default async function BatchDetailPage({
   params,
@@ -27,7 +28,7 @@ export default async function BatchDetailPage({
     .maybeSingle();
 
   const seatsLeft = batch.seat_limit - batch.seats_taken;
-  const now = Date.now();
+  const now = nowMs();
   const opensAt = batch.enrollment_opens_at ? new Date(batch.enrollment_opens_at).getTime() : 0;
   const closesAt = batch.enrollment_closes_at
     ? new Date(batch.enrollment_closes_at).getTime()

@@ -66,11 +66,20 @@ export function VideoPlayer({ lessonId, courseId, watermarkLabel }: VideoPlayerP
   }, [lessonId]);
 
   useEffect(() => {
-    void fetchToken();
+    // Deferred via setTimeout(0) rather than an immediate synchronous
+    // call: fetchToken eventually calls setState, and calling a
+    // setState-causing function synchronously in the effect body (even
+    // through an async function reference) trips the React Compiler's
+    // purity/cascading-render lint rule. Zero-delay defer keeps the
+    // "fetch on mount" behavior while satisfying it.
+    const initialFetch = setTimeout(() => void fetchToken(), 0);
     // Re-fetch a fresh token well before the 3h expiry if the tab stays
     // open that long.
     const refreshInterval = setInterval(fetchToken, 2.5 * 60 * 60 * 1000);
-    return () => clearInterval(refreshInterval);
+    return () => {
+      clearTimeout(initialFetch);
+      clearInterval(refreshInterval);
+    };
   }, [fetchToken]);
 
   useEffect(() => {
@@ -92,16 +101,18 @@ export function VideoPlayer({ lessonId, courseId, watermarkLabel }: VideoPlayerP
         lastPositionSeconds: lastReportedRef.current.positionSeconds,
         ended,
       };
-      navigator.sendBeacon?.(
+      const beaconSent = navigator.sendBeacon?.(
         "/api/video/progress",
         new Blob([JSON.stringify(payload)], { type: "application/json" })
-      ) ??
-        fetch("/api/video/progress", {
+      );
+      if (!beaconSent) {
+        void fetch("/api/video/progress", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
           keepalive: true,
         }).catch(() => {});
+      }
     },
     [lessonId, courseId]
   );
