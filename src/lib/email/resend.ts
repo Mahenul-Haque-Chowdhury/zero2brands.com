@@ -24,7 +24,8 @@ export type EmailTemplate =
   | "refund_processed"
   | "store_request_received"
   | "store_request_internal"
-  | "device_signed_out";
+  | "device_signed_out"
+  | "admin_weekly_summary";
 
 interface QueueEmailParams {
   template: EmailTemplate;
@@ -46,21 +47,44 @@ export async function queueEmail(params: QueueEmailParams): Promise<void> {
   const resend = getResendClient();
 
   let recipient = params.to;
+  let templateData = params.data ?? {};
+
   if (!recipient && params.userId) {
     const { data } = await admin
       .from("profiles")
-      .select("email")
+      .select("email, full_name")
       .eq("id", params.userId)
       .maybeSingle();
     recipient = data?.email;
+    templateData = { fullName: data?.full_name, ...templateData };
   }
-  if (!recipient && params.paymentId) {
+
+  if (params.paymentId) {
     const { data } = await admin
       .from("payments")
-      .select("user_id, profiles:user_id(email)")
+      .select(
+        "user_id, amount_bdt, merchant_invoice_number, bkash_trx_id, products(title), profiles:user_id(email, full_name)"
+      )
       .eq("id", params.paymentId)
-      .maybeSingle<{ user_id: string; profiles: { email: string } | null }>();
-    recipient = data?.profiles?.email ?? undefined;
+      .maybeSingle<{
+        user_id: string;
+        amount_bdt: number;
+        merchant_invoice_number: string;
+        bkash_trx_id: string | null;
+        products: { title: string } | null;
+        profiles: { email: string; full_name: string | null } | null;
+      }>();
+
+    if (!recipient) recipient = data?.profiles?.email ?? undefined;
+
+    templateData = {
+      fullName: data?.profiles?.full_name,
+      amountBdt: data?.amount_bdt,
+      invoiceNumber: data?.merchant_invoice_number,
+      trxId: data?.bkash_trx_id,
+      productTitle: data?.products?.title,
+      ...templateData, // explicit data passed by the caller always wins
+    };
   }
 
   if (!recipient) {
@@ -87,7 +111,7 @@ export async function queueEmail(params: QueueEmailParams): Promise<void> {
     const { renderEmailTemplate } = await import("@/lib/email/templates/render");
     const { subject, html, text } = await renderEmailTemplate(
       params.template,
-      params.data ?? {}
+      templateData
     );
 
     const result = await resend.emails.send({

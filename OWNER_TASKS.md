@@ -40,6 +40,14 @@ the relevant account) can do — the code side is already built or stubbed.
 
 - Add all env vars to Vercel (Production / Preview / Development separately). bKash sandbox creds in Preview+Development, live creds in Production only.
 
+## Phase 5/14 (storage buckets)
+
+- The weekly backup-export cron (`/api/cron/backup-export`) uploads CSV
+  snapshots of `payments`, `enrollments` and `profiles` to a Supabase
+  Storage bucket named `backups`. This bucket is not in the original
+  Phase 0.3 list — create it (private) in addition to `avatars`,
+  `lesson-images`, `resources`, `certificates`.
+
 ## Phase 2 (database)
 
 - The full migration set (`0001_schema.sql`, `0002_rls_policies.sql`,
