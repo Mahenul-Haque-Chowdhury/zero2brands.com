@@ -3,9 +3,22 @@
 import { useEffect, useState } from "react";
 
 const LINES = [
-  { text: "Build your own clothing brand, from zero.", lang: "en" },
-  { text: "শূন্য থেকে নিজের ব্র্যান্ড তৈরী করুন আমাদের সাথে", lang: "bn" },
-] as const;
+  {
+    text: "Build your own clothing brand, from zero.",
+    lang: "en" as const,
+    fontFamily: "var(--font-sen)",
+    // Bengali glyphs run visually taller than Latin ones at the same
+    // font-size (bigger x-height, conjuncts extend further), so the
+    // Bangla line is set a notch smaller to read as the same size.
+    fontSize: "1em",
+  },
+  {
+    text: "শূন্য থেকে নিজের ব্র্যান্ড তৈরী করুন আমাদের সাথে",
+    lang: "bn" as const,
+    fontFamily: "var(--font-bengali)",
+    fontSize: "0.82em",
+  },
+];
 
 const DISPLAY_MS = 3200;
 
@@ -47,6 +60,8 @@ export function AnimatedTagline({ className }: { className?: string }) {
         display: "inline-block",
         opacity: visible ? 1 : 0,
         transition: "opacity 350ms ease",
+        fontFamily: current.fontFamily,
+        fontSize: current.fontSize,
       }}
     >
       {current.text}

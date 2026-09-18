@@ -33,3 +33,19 @@ export const sen = localFont({
   variable: "--font-sen",
   display: "swap",
 });
+
+/**
+ * Noto Sans Bengali, self-hosted. Sen has no Bengali glyphs, so without
+ * this the browser falls back to whatever heavy default Bangla font the
+ * OS ships, which renders visibly larger/bolder than the Latin text next
+ * to it. Used specifically for Bangla text (e.g. the looping hero tagline).
+ */
+export const notoSansBengali = localFont({
+  src: [
+    { path: "../../public/fonts/NotoSansBengali-Regular.ttf", weight: "400", style: "normal" },
+    { path: "../../public/fonts/NotoSansBengali-Medium.ttf", weight: "500", style: "normal" },
+    { path: "../../public/fonts/NotoSansBengali-SemiBold.ttf", weight: "600", style: "normal" },
+  ],
+  variable: "--font-bengali",
+  display: "swap",
+});
