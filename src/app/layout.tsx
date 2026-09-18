@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AnalyticsProvider } from "@/components/shared/analytics-provider";
+import { SmoothScrollProvider } from "@/components/motion/smooth-scroll-provider";
 import { poppins, sen, notoSansBengali } from "@/lib/fonts";
 import "./globals.css";
 
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`h-full antialiased ${poppins.variable} ${sen.variable} ${notoSansBengali.variable}`}
     >
       <body className="min-h-full flex flex-col">
+        <SmoothScrollProvider />
         <TooltipProvider>
           {children}
           <Toaster richColors position="top-center" />

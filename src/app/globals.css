@@ -156,6 +156,25 @@
   }
 }
 
+@keyframes brand-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes brand-sheen {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -194,6 +213,39 @@
       transparent 1px
     );
     background-size: 20px 20px;
+  }
+
+  /* Slow conic sheen used behind premium surfaces (GrayVally hero).
+     Pure CSS so it costs no JS and pauses under reduced motion via the
+     global rule above. */
+  .bg-brand-aurora {
+    background-color: var(--brand-navy);
+    background-image:
+      radial-gradient(ellipse 55% 45% at 12% 10%, rgba(0, 200, 83, 0.20) 0%, transparent 62%),
+      radial-gradient(ellipse 50% 40% at 88% 85%, rgba(0, 200, 83, 0.10) 0%, transparent 58%),
+      radial-gradient(ellipse 60% 50% at 70% 8%, rgba(26, 66, 105, 0.55) 0%, transparent 60%);
+  }
+
+  .bg-brand-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Masks a decorative layer so it fades out toward the edges instead of
+     stopping on a hard line. */
+  .mask-fade-edges {
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+  }
+
+  .animate-float {
+    animation: brand-float 7s ease-in-out infinite;
+  }
+
+  .animate-sheen {
+    background-size: 200% 100%;
+    animation: brand-sheen 6s linear infinite;
   }
 
   .text-balance {
