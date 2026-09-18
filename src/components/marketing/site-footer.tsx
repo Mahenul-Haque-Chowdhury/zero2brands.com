@@ -65,7 +65,7 @@ export function SiteFooter() {
             &copy; {new Date().getFullYear()} Zero2Brands. All rights
             reserved.
           </p>
-          <p>Dhaka, Bangladesh</p>
+          <p>Pubail, Gazipur, Dhaka, Bangladesh</p>
         </div>
       </div>
     </footer>

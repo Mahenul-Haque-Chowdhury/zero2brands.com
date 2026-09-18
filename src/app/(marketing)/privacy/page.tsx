@@ -75,7 +75,7 @@ export default function PrivacyPage() {
         <p>
           Zero2Brands &middot; support@zero2brands.com
           <br />
-          [Business address, pending from owner]
+          Pubail, Gazipur, Dhaka, Bangladesh
         </p>
       </div>
     </div>

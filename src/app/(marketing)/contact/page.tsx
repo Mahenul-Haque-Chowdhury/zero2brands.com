@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Mail } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import { LeadForm } from "@/components/marketing/lead-form";
 
 export const metadata: Metadata = { title: "Contact" };
@@ -20,6 +20,10 @@ export default function ContactPage() {
       <p className="mt-3 flex items-center gap-2 text-sm font-medium text-foreground">
         <Mail className="size-4 text-accent" />
         support@zero2brands.com
+      </p>
+      <p className="mt-2 flex items-center gap-2 text-sm font-medium text-foreground">
+        <MapPin className="size-4 text-accent" />
+        Pubail, Gazipur, Dhaka, Bangladesh
       </p>
 
       <div className="mt-10 rounded-xl border border-border bg-card p-6 shadow-sm sm:p-8">
