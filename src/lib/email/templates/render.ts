@@ -144,15 +144,28 @@ export async function renderEmailTemplate(
       });
       break;
 
-    case "store_request_internal":
-      subject = "New store request submitted";
+    case "store_request_internal": {
+      // Carries every field the form collects, so the notification is
+      // actionable on its own rather than forcing a click through to the
+      // management panel just to see who submitted it.
+      const detail: string[] = [
+        `Name: ${str("fullName")}`,
+        `Phone: ${str("phone")}`,
+      ];
+      if (str("email")) detail.push(`Email: ${str("email")}`);
+      if (str("businessName")) detail.push(`Business: ${str("businessName")}`);
+      if (str("projectType")) detail.push(`Project type: ${str("projectType")}`);
+      if (str("message")) detail.push(`Message: ${str("message")}`);
+
+      subject = `New store request: ${str("fullName")}`;
       element = GenericNoticeEmail({
         heading: "New store request",
-        lines: [`${str("fullName")} · ${str("phone")}`],
+        lines: detail,
         ctaLabel: "View in management",
         ctaUrl: `${SITE_URL}/management/store-requests`,
       });
       break;
+    }
 
     case "device_signed_out":
       subject = "A device was signed out of your account";

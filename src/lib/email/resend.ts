@@ -32,6 +32,12 @@ interface QueueEmailParams {
   paymentId?: string;
   userId?: string;
   to?: string;
+  /**
+   * Overrides the default EMAIL_REPLY_TO for this one send. Used by the
+   * internal store-request notification so hitting reply goes straight to
+   * the person who submitted the form rather than back to support.
+   */
+  replyTo?: string;
   data?: Record<string, unknown>;
 }
 
@@ -116,7 +122,7 @@ export async function queueEmail(params: QueueEmailParams): Promise<void> {
 
     const result = await resend.emails.send({
       from: serverEnv.EMAIL_FROM,
-      replyTo: serverEnv.EMAIL_REPLY_TO,
+      replyTo: params.replyTo ?? serverEnv.EMAIL_REPLY_TO,
       to: recipient,
       subject,
       html,

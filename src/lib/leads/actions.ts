@@ -66,7 +66,16 @@ export async function submitLeadAction(
     void queueEmail({
       template: "store_request_internal",
       to: "support@zero2brands.com",
-      data: { fullName: parsed.data.fullName, phone: normalizedPhone },
+      // Reply goes to the submitter, not back to support.
+      replyTo: parsed.data.email || undefined,
+      data: {
+        fullName: parsed.data.fullName,
+        phone: normalizedPhone,
+        email: parsed.data.email || "",
+        businessName: parsed.data.businessName || "",
+        projectType: parsed.data.projectType || "",
+        message: parsed.data.message || "",
+      },
     }).catch(() => {});
     void queueEmail({
       template: "store_request_received",
