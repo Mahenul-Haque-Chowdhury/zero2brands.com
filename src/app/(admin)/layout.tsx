@@ -16,6 +16,7 @@ import {
 import { requireStaff } from "@/lib/auth/guards";
 import { logoutAction } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
+import { Wordmark } from "@/components/shared/wordmark";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
@@ -44,12 +45,10 @@ export default async function AdminLayout({
       <aside className="hidden w-52 shrink-0 flex-col border-r border-border bg-sidebar text-sidebar-foreground md:flex">
         <Link
           href="/admin"
-          className="flex h-14 items-center gap-2 border-b border-sidebar-border px-4 text-sm font-semibold tracking-tight"
+          className="flex h-14 items-center gap-2 border-b border-sidebar-border px-4"
+          aria-label="Zero2Brands admin home"
         >
-          <span className="flex size-6 items-center justify-center rounded bg-sidebar-primary text-[0.65rem] font-bold text-sidebar-primary-foreground">
-            Z2B
-          </span>
-          Admin
+          <Wordmark size="sm" onDark tagline="Admin" />
         </Link>
         <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-2">
           {NAV_ITEMS.map((item) => {

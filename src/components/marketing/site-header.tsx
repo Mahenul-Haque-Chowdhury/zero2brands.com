@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Wordmark } from "@/components/shared/wordmark";
 import { cn } from "cn";
 
 const NAV = [
@@ -22,14 +23,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/75">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link
-          href="/"
-          className="flex items-center gap-2 font-heading text-lg font-semibold tracking-tight text-primary"
-        >
-          <span className="flex size-8 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">
-            Z2B
-          </span>
-          <span className="hidden sm:inline">Zero2Brands</span>
+        <Link href="/" className="flex items-center" aria-label="Zero2Brands home">
+          <Wordmark />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">

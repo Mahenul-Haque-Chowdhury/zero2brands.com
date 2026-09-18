@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Wordmark } from "@/components/shared/wordmark";
 
 const COLUMNS = [
   {
@@ -33,14 +34,8 @@ export function SiteFooter() {
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className="grid grid-cols-2 gap-10 sm:grid-cols-4">
           <div className="col-span-2 sm:col-span-1">
-            <Link
-              href="/"
-              className="flex items-center gap-2 font-heading text-lg font-semibold tracking-tight text-primary"
-            >
-              <span className="flex size-8 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">
-                Z2B
-              </span>
-              Zero2Brands
+            <Link href="/" className="flex items-center" aria-label="Zero2Brands home">
+              <Wordmark tagline="Build a clothing brand" />
             </Link>
             <p className="mt-3 max-w-xs text-sm text-muted-foreground">
               A practical, step-by-step course and community for starting and
