@@ -48,7 +48,7 @@ export default async function AdminLayout({
           className="flex h-14 items-center gap-2 border-b border-sidebar-border px-4"
           aria-label="Zero2Brands admin home"
         >
-          <Wordmark size="sm" onDark tagline="Admin" />
+          <Wordmark size="sm" tagline="Admin" />
         </Link>
         <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-2">
           {NAV_ITEMS.map((item) => {

@@ -21,7 +21,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/75">
+    <header className="sticky top-0 z-40 bg-primary">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="flex items-center" aria-label="Zero2Brands home">
           <Wordmark />
@@ -37,8 +37,8 @@ export function SiteHeader() {
                 className={cn(
                   "rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   active
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "text-white"
+                    : "text-white/70 hover:text-white"
                 )}
               >
                 {item.label}
@@ -48,7 +48,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Button variant="ghost" size="sm" render={<Link href="/login">Log in</Link>} />
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-white hover:bg-white/10 hover:text-white"
+            render={<Link href="/login">Log in</Link>}
+          />
           <Button
             size="sm"
             className="bg-accent text-accent-foreground hover:bg-accent/90"
@@ -61,29 +66,30 @@ export function SiteHeader() {
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="inline-flex size-9 items-center justify-center rounded-md text-foreground md:hidden"
+          className="inline-flex size-9 items-center justify-center rounded-md text-white md:hidden"
         >
           {open ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>
       </div>
 
       {open ? (
-        <div className="border-t border-border bg-background px-4 py-4 md:hidden">
+        <div className="border-t border-white/10 bg-primary px-4 py-4 md:hidden">
           <nav className="flex flex-col gap-1">
             {NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                className="rounded-md px-3 py-2.5 text-sm font-medium text-white/70 hover:bg-white/10 hover:text-white"
               >
                 {item.label}
               </Link>
             ))}
           </nav>
-          <div className="mt-4 flex flex-col gap-2 border-t border-border pt-4">
+          <div className="mt-4 flex flex-col gap-2 border-t border-white/10 pt-4">
             <Button
               variant="outline"
+              className="border-white/20 text-white hover:bg-white/10 hover:text-white"
               render={<Link href="/login">Log in</Link>}
             />
             <Button
