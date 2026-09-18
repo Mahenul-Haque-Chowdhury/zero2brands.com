@@ -24,7 +24,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 bg-primary">
       <div className="mx-auto flex h-20 max-w-360 items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center" aria-label="Zero2Brands home">
-          <Wordmark />
+          <Wordmark size="sm" />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
@@ -35,7 +35,7 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  "rounded-md px-3 py-2 text-base font-medium transition-colors",
                   active
                     ? "text-white"
                     : "text-white/70 hover:text-white"
@@ -50,13 +50,11 @@ export function SiteHeader() {
         <div className="hidden items-center gap-2 md:flex">
           <Button
             variant="ghost"
-            size="sm"
-            className="text-white hover:bg-white/10 hover:text-white"
+            className="text-base text-white hover:bg-white/10 hover:text-white"
             render={<Link href="/login">Log in</Link>}
           />
           <Button
-            size="sm"
-            className="bg-accent text-accent-foreground hover:bg-accent/90"
+            className="bg-accent text-base text-accent-foreground hover:bg-accent/90"
             render={<Link href="/course">Enroll now</Link>}
           />
         </div>
