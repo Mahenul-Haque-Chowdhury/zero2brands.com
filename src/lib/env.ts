@@ -11,13 +11,21 @@
  */
 import { z } from "zod";
 
+// Treats an empty string the same as "unset" so optional env vars left
+// blank in .env.local (as .env.example encourages) don't fail validation.
+const optionalString = () =>
+  z.preprocess(
+    (val) => (val === "" ? undefined : val),
+    z.string().min(1).optional()
+  );
+
 const serverSchema = z.object({
   // Supabase
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
-  DATABASE_URL: z.string().min(1).optional(),
-  DIRECT_URL: z.string().min(1).optional(),
+  DATABASE_URL: optionalString(),
+  DIRECT_URL: optionalString(),
 
   // Bunny Stream
   BUNNY_STREAM_LIBRARY_ID: z.string().optional(),
