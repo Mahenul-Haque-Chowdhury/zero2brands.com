@@ -30,13 +30,16 @@ export function CourseSidebar({
   activeLessonSlug?: string;
 }) {
   return (
-    <aside className="w-full shrink-0 rounded-lg border p-3 md:w-72">
-      {modules.map((module) => (
-        <div key={module.id} className="mb-4">
-          <h3 className="mb-2 text-sm font-semibold text-muted-foreground">
+    <aside className="w-full shrink-0 rounded-xl border border-border bg-card p-3 md:w-72">
+      {modules.map((module, i) => (
+        <div
+          key={module.id}
+          className={cn("mb-4 last:mb-0", i > 0 && "border-t border-border pt-4")}
+        >
+          <h3 className="mb-2 px-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
             {module.title}
           </h3>
-          <ul className="flex flex-col gap-1">
+          <ul className="flex flex-col gap-0.5">
             {module.lessons
               .filter((l) => l.is_published)
               .sort((a, b) => a.sort_order - b.sort_order)
@@ -48,16 +51,16 @@ export function CourseSidebar({
                     <Link
                       href={`/dashboard/course/${lesson.slug}`}
                       className={cn(
-                        "flex items-center gap-2 rounded px-2 py-1.5 text-sm hover:bg-muted",
-                        isActive && "bg-muted font-medium"
+                        "flex items-center gap-2 rounded-lg px-2 py-2 text-sm transition-colors hover:bg-muted",
+                        isActive && "bg-accent/10 font-medium text-foreground"
                       )}
                     >
                       {isCompleted ? (
-                        <CheckCircle2 className="h-4 w-4 shrink-0 text-green-600" />
+                        <CheckCircle2 className="size-4 shrink-0 text-accent" />
                       ) : isActive ? (
-                        <PlayCircle className="h-4 w-4 shrink-0 text-primary" />
+                        <PlayCircle className="size-4 shrink-0 text-primary" />
                       ) : (
-                        <Circle className="h-4 w-4 shrink-0 text-muted-foreground" />
+                        <Circle className="size-4 shrink-0 text-muted-foreground" />
                       )}
                       <span className="truncate">{lesson.title}</span>
                     </Link>

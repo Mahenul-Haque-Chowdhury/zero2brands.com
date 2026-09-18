@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function MarkCompleteButton({
@@ -38,8 +38,8 @@ export function MarkCompleteButton({
 
   if (completed) {
     return (
-      <div className="flex items-center gap-1 text-sm text-green-600">
-        <CheckCircle2 className="h-4 w-4" />
+      <div className="flex items-center gap-1.5 text-sm font-medium text-accent">
+        <CheckCircle2 className="size-4" />
         Completed
       </div>
     );
@@ -47,7 +47,14 @@ export function MarkCompleteButton({
 
   return (
     <Button size="sm" variant="outline" onClick={handleClick} disabled={pending}>
-      {pending ? "Marking…" : "Mark as complete"}
+      {pending ? (
+        <>
+          <Loader2 className="size-4 animate-spin" />
+          Marking
+        </>
+      ) : (
+        "Mark as complete"
+      )}
     </Button>
   );
 }

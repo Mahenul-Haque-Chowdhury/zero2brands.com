@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { ChevronLeft, ChevronRight, FileText, Lock } from "lucide-react";
 import { requireOnboarded } from "@/lib/auth/guards";
 import { CourseSidebar } from "@/components/dashboard/course-sidebar";
 import { VideoPlayer } from "@/components/video/video-player";
@@ -43,12 +44,18 @@ export default async function LessonPage({
     }
 
     return (
-      <div className="mx-auto max-w-2xl py-16 text-center">
+      <div className="mx-auto flex max-w-2xl flex-col items-center gap-3 py-16 text-center">
+        <span className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
+          <Lock className="size-6" />
+        </span>
         <h1 className="text-xl font-semibold">This lesson is locked</h1>
-        <p className="mt-2 text-muted-foreground">
+        <p className="text-muted-foreground">
           Complete the previous lessons in order to unlock this one.
         </p>
-        <Link href="/dashboard/course" className="mt-4 inline-block underline">
+        <Link
+          href="/dashboard/course"
+          className="mt-1 font-medium text-primary underline-offset-4 hover:underline"
+        >
           Back to course
         </Link>
       </div>
@@ -97,16 +104,18 @@ export default async function LessonPage({
       : null;
 
   return (
-    <div className="mx-auto flex max-w-5xl flex-col gap-6 md:flex-row">
+    <div className="flex flex-col gap-6 md:flex-row">
       <CourseSidebar
         modules={modules ?? []}
         completedLessonIds={completedLessonIds}
         activeLessonSlug={lessonSlug}
       />
-      <div className="flex-1">
-        <div className="mb-2 flex items-center gap-2">
-          <h1 className="text-xl font-semibold">{lesson.title}</h1>
-          <Badge variant="outline">{lesson.type}</Badge>
+      <div className="flex-1 rounded-xl border border-border bg-card p-6 sm:p-8">
+        <div className="mb-4 flex flex-wrap items-center gap-2">
+          <h1 className="text-xl font-semibold tracking-tight">{lesson.title}</h1>
+          <Badge variant="outline" className="capitalize">
+            {lesson.type}
+          </Badge>
         </div>
 
         {lesson.type === "video" && lesson.bunny_video_id ? (
@@ -132,15 +141,16 @@ export default async function LessonPage({
         : null}
 
         {resources && resources.length > 0 ? (
-          <div className="mt-6">
+          <div className="mt-6 rounded-lg border border-border bg-muted/40 p-4">
             <h2 className="mb-2 text-sm font-semibold">Resources</h2>
-            <ul className="flex flex-col gap-1">
+            <ul className="flex flex-col gap-1.5">
               {resources.map((r) => (
                 <li key={r.id}>
                   <a
                     href={`/dashboard/resources?download=${r.id}`}
-                    className="text-sm underline"
+                    className="inline-flex items-center gap-1.5 text-sm text-primary underline-offset-4 hover:underline"
                   >
+                    <FileText className="size-3.5" />
                     {r.title}
                   </a>
                 </li>
@@ -149,22 +159,24 @@ export default async function LessonPage({
           </div>
         ) : null}
 
-        <div className="mt-6 flex items-center justify-between">
-          <div className="flex gap-2">
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-5">
+          <div className="flex gap-4">
             {prevLesson ? (
               <Link
                 href={`/dashboard/course/${prevLesson.slug}`}
-                className="text-sm underline"
+                className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                ← Previous
+                <ChevronLeft className="size-4" />
+                Previous
               </Link>
             ) : null}
             {nextLesson ? (
               <Link
                 href={`/dashboard/course/${nextLesson.slug}`}
-                className="text-sm underline"
+                className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Next →
+                Next
+                <ChevronRight className="size-4" />
               </Link>
             ) : null}
           </div>

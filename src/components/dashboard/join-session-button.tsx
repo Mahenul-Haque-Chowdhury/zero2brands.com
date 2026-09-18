@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { toast } from "sonner";
+import { Loader2, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getZoomJoinUrl } from "@/lib/batches/actions";
 
@@ -21,7 +22,17 @@ export function JoinSessionButton({ liveSessionId }: { liveSessionId: string }) 
 
   return (
     <Button size="sm" onClick={handleClick} disabled={pending}>
-      {pending ? "Loading…" : "Join session"}
+      {pending ? (
+        <>
+          <Loader2 className="size-4 animate-spin" />
+          Loading
+        </>
+      ) : (
+        <>
+          <Video className="size-4" />
+          Join session
+        </>
+      )}
     </Button>
   );
 }

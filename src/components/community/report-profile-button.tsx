@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
+import { Flag, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -48,6 +49,7 @@ export function ReportProfileButton({ reportedUserId }: { reportedUserId: string
       <DialogTrigger
         render={
           <Button variant="ghost" size="sm" className="text-muted-foreground">
+            <Flag className="size-3.5" />
             Report this profile
           </Button>
         }
@@ -59,12 +61,19 @@ export function ReportProfileButton({ reportedUserId }: { reportedUserId: string
         <Textarea
           value={reason}
           onChange={(e) => setReason(e.target.value)}
-          placeholder="What's the issue?"
+          placeholder="What's the issue, briefly?"
           rows={4}
         />
         <DialogFooter>
           <Button onClick={handleSubmit} disabled={pending || !reason.trim()}>
-            {pending ? "Submitting…" : "Submit report"}
+            {pending ? (
+              <>
+                <Loader2 className="size-4 animate-spin" />
+                Submitting
+              </>
+            ) : (
+              "Submit report"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -7,8 +7,13 @@ export default async function SettingsPage() {
   const { profile } = await requireOnboarded();
 
   return (
-    <div className="mx-auto max-w-xl">
-      <h1 className="mb-6 text-2xl font-semibold">Settings</h1>
+    <div className="mx-auto flex max-w-xl flex-col gap-6">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
+        <p className="mt-1 text-muted-foreground">
+          Manage your profile and how it appears to other students.
+        </p>
+      </div>
       <SettingsForm profile={profile} />
     </div>
   );

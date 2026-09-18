@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 
@@ -35,7 +36,14 @@ export function RevokeDeviceButton({ sessionId }: { sessionId: string }) {
       disabled={pending}
       onClick={handleClick}
     >
-      {pending ? "Signing out…" : "Sign out"}
+      {pending ? (
+        <>
+          <Loader2 className="size-4 animate-spin" />
+          Signing out
+        </>
+      ) : (
+        "Sign out"
+      )}
     </Button>
   );
 }

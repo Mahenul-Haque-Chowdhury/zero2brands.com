@@ -9,10 +9,10 @@ export default async function CommunityPage() {
   await requireEnrolledStudent();
 
   return (
-    <div className="mx-auto max-w-5xl">
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold">Student Community</h1>
-        <p className="text-muted-foreground">
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight">Student Community</h1>
+        <p className="mt-1 text-muted-foreground">
           Meet other students building their businesses.
         </p>
       </div>
