@@ -60,34 +60,18 @@ export function AnimatedTagline({ className }: { className?: string }) {
   }, []);
 
   return (
-    <span className={className} style={{ position: "relative", display: "block" }}>
-      {/* Invisible sizers: both lines rendered in normal flow, stacked, so
-          the box is always as tall as the taller of the two (the Bangla
-          two-liner). This reserves the space; nothing here is seen. */}
-      <span aria-hidden style={{ visibility: "hidden" }}>
-        {LINES.map((line) => (
-          <span
-            key={line.lang}
-            style={{
-              display: "block",
-              fontFamily: line.fontFamily,
-              fontSize: line.fontSize,
-            }}
-          >
-            {line.text}
-          </span>
-        ))}
-      </span>
-
-      {/* The actual visible, animated lines, absolutely positioned over
-          the sizer above so layout never shifts between them. */}
+    <span className={className} style={{ display: "grid" }}>
+      {/* All lines share the same grid cell (both row 1 / column 1), so the
+          box's height is the MAX of the lines, not their sum. Only the
+          visible one has opacity 1; the rest are opacity 0 but still occupy
+          the shared cell, which is what keeps the height fixed. */}
       {LINES.map((line, i) => (
         <span
           key={line.lang}
           lang={line.lang}
+          aria-hidden={i !== index}
           style={{
-            position: "absolute",
-            inset: 0,
+            gridArea: "1 / 1",
             opacity: i === index && visible ? 1 : 0,
             transition: "opacity 350ms ease",
             fontFamily: line.fontFamily,
