@@ -11,12 +11,17 @@ const LINES = [
     // font-size (bigger x-height, conjuncts extend further), so the
     // Bangla line is set a notch smaller to read as the same size.
     fontSize: "1em",
+    lineHeight: 1.1,
   },
   {
     text: "শূন্য থেকে নিজের ব্র্যান্ড তৈরী করুন আমাদের সাথে",
     lang: "bn" as const,
     fontFamily: "var(--font-bengali)",
     fontSize: "0.82em",
+    // A touch more line-height than the English line: Bangla conjuncts and
+    // matras sit closer to the line above/below at the same ratio, so this
+    // line reads as cramped without a small bump.
+    lineHeight: 1.35,
   },
 ];
 
@@ -76,6 +81,7 @@ export function AnimatedTagline({ className }: { className?: string }) {
             transition: "opacity 350ms ease",
             fontFamily: line.fontFamily,
             fontSize: line.fontSize,
+            lineHeight: line.lineHeight,
           }}
         >
           {line.text}
