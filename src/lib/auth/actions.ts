@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
@@ -10,8 +11,12 @@ import {
   forgotPasswordSchema,
   resetPasswordSchema,
   onboardingSchema,
+  requestLoginOtpSchema,
+  verifyLoginOtpSchema,
+  normalizeBdPhone,
 } from "@/lib/validations/auth";
 import { checkRateLimit, limiters } from "@/lib/ratelimit/index";
+import { sendLoginOtp, verifyLoginOtp } from "@/lib/auth/otp";
 
 export type ActionResult = { error: string } | { success: true };
 
@@ -91,7 +96,7 @@ export async function loginAction(
   formData: FormData
 ): Promise<ActionResult> {
   const parsed = loginSchema.safeParse({
-    email: formData.get("email"),
+    identifier: formData.get("identifier"),
     password: formData.get("password"),
   });
 
@@ -99,8 +104,37 @@ export async function loginAction(
     return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
 
-  const { email, password } = parsed.data;
+  const { identifier, password } = parsed.data;
   const ip = await getClientIp();
+
+  // The login field accepts either an email or a BD phone number. If it
+  // normalises as a phone, resolve the account's email server-side first —
+  // Supabase's password grant only accepts email, phone isn't a login
+  // credential on the auth.users side.
+  const asPhone = normalizeBdPhone(identifier);
+  let email: string;
+
+  if (asPhone) {
+    const admin = createAdminClient();
+    const { data: profile } = await admin
+      .from("profiles")
+      .select("email")
+      .eq("phone", asPhone)
+      .maybeSingle();
+
+    if (!profile) {
+      // Same generic message as a wrong password, so this can't be used to
+      // enumerate which phone numbers are registered.
+      return { error: "Invalid email/phone or password." };
+    }
+    email = profile.email;
+  } else {
+    const emailParse = z.string().trim().toLowerCase().email().safeParse(identifier);
+    if (!emailParse.success) {
+      return { error: "Enter a valid email or Bangladeshi phone number." };
+    }
+    email = emailParse.data;
+  }
 
   const [emailLimit, ipLimit] = await Promise.all([
     checkRateLimit(limiters.loginPerEmail, email),
@@ -118,7 +152,122 @@ export async function loginAction(
   });
 
   if (error) {
-    return { error: "Invalid email or password." };
+    return { error: "Invalid email/phone or password." };
+  }
+
+  redirect("/dashboard");
+}
+
+/**
+ * Step 1 of OTP login: send a 6-digit code by SMS to a phone that already
+ * belongs to a registered account. Returns a generic success either way so
+ * this can't be used to enumerate registered phone numbers — the SMS itself
+ * only sends when a matching profile exists.
+ */
+export async function requestLoginOtpAction(
+  _prev: ActionResult | null,
+  formData: FormData
+): Promise<ActionResult> {
+  const parsed = requestLoginOtpSchema.safeParse({
+    phone: formData.get("phone"),
+  });
+
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+  }
+
+  const { phone } = parsed.data;
+  const ip = await getClientIp();
+
+  const [phoneLimit, ipLimit] = await Promise.all([
+    checkRateLimit(limiters.otpRequestPerPhone, phone),
+    checkRateLimit(limiters.otpRequestPerIp, ip),
+  ]);
+
+  if (!phoneLimit.success || !ipLimit.success) {
+    return { error: "Too many code requests. Please try again later." };
+  }
+
+  const admin = createAdminClient();
+  const { data: profile } = await admin
+    .from("profiles")
+    .select("id")
+    .eq("phone", phone)
+    .maybeSingle();
+
+  if (profile) {
+    await sendLoginOtp(phone);
+  }
+
+  return { success: true };
+}
+
+/**
+ * Step 2 of OTP login: verify the code, then establish a real Supabase
+ * session server-side via generateLink + verifyOtp (the standard pattern
+ * for a custom OTP flow that still needs to end in a normal session cookie,
+ * since the service-role client cannot sign a user in directly).
+ */
+export async function verifyLoginOtpAction(
+  _prev: ActionResult | null,
+  formData: FormData
+): Promise<ActionResult> {
+  const parsed = verifyLoginOtpSchema.safeParse({
+    phone: formData.get("phone"),
+    code: formData.get("code"),
+  });
+
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+  }
+
+  const { phone, code } = parsed.data;
+
+  const rl = await checkRateLimit(limiters.otpVerifyPerPhone, phone);
+  if (!rl.success) {
+    return { error: "Too many attempts. Please request a new code." };
+  }
+
+  const admin = createAdminClient();
+  const { data: profile } = await admin
+    .from("profiles")
+    .select("email")
+    .eq("phone", phone)
+    .maybeSingle();
+
+  if (!profile) {
+    return { error: "Invalid or expired code." };
+  }
+
+  const result = await verifyLoginOtp(phone, code);
+  if (!result.ok) {
+    if (result.reason === "expired") {
+      return { error: "That code has expired. Request a new one." };
+    }
+    if (result.reason === "too_many_attempts") {
+      return { error: "Too many attempts. Request a new code." };
+    }
+    return { error: "Invalid or expired code." };
+  }
+
+  const { data: linkData, error: linkError } =
+    await admin.auth.admin.generateLink({
+      type: "magiclink",
+      email: profile.email,
+    });
+
+  if (linkError || !linkData.properties?.hashed_token) {
+    return { error: "Something went wrong. Please try again." };
+  }
+
+  const supabase = await createClient();
+  const { error: verifyError } = await supabase.auth.verifyOtp({
+    type: "email",
+    token_hash: linkData.properties.hashed_token,
+  });
+
+  if (verifyError) {
+    return { error: "Something went wrong. Please try again." };
   }
 
   redirect("/dashboard");

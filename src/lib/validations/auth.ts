@@ -52,12 +52,42 @@ export const signupSchema = z.object({
 
 export type SignupInput = z.infer<typeof signupSchema>;
 
+// Login accepts either an email or a Bangladeshi phone number in the same
+// field. Kept as a plain string here — actualLoginAction resolves which
+// shape it is and looks up the underlying email if it's a phone.
 export const loginSchema = z.object({
-  email: z.string().trim().toLowerCase().email("Enter a valid email"),
+  identifier: z
+    .string()
+    .trim()
+    .min(1, "Enter your email or phone number"),
   password: z.string().min(1, "Password is required"),
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;
+
+export const requestLoginOtpSchema = z.object({
+  phone: z
+    .string()
+    .trim()
+    .refine((val) => normalizeBdPhone(val) !== null, {
+      message: "Enter a valid Bangladeshi mobile number",
+    })
+    .transform((val) => normalizeBdPhone(val)!),
+});
+
+export const verifyLoginOtpSchema = z.object({
+  phone: z
+    .string()
+    .trim()
+    .refine((val) => normalizeBdPhone(val) !== null, {
+      message: "Enter a valid Bangladeshi mobile number",
+    })
+    .transform((val) => normalizeBdPhone(val)!),
+  code: z
+    .string()
+    .trim()
+    .regex(/^\d{6}$/, "Enter the 6-digit code"),
+});
 
 export const forgotPasswordSchema = z.object({
   email: z.string().trim().toLowerCase().email("Enter a valid email"),

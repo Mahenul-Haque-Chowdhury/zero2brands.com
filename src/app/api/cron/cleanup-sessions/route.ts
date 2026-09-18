@@ -17,5 +17,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
+  const { error: otpError } = await admin.rpc("cleanup_expired_otp_codes");
+  if (otpError) {
+    return NextResponse.json({ error: otpError.message }, { status: 500 });
+  }
+
   return NextResponse.json({ deletedSessions: data });
 }

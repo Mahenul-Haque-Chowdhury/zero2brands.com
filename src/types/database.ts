@@ -1364,6 +1364,39 @@ export type Database = {
           },
         ]
       }
+      otp_codes: {
+        Row: {
+          attempts: number
+          code_hash: string
+          consumed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          phone: string
+          purpose: Database["public"]["Enums"]["otp_purpose"]
+        }
+        Insert: {
+          attempts?: number
+          code_hash: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          phone: string
+          purpose?: Database["public"]["Enums"]["otp_purpose"]
+        }
+        Update: {
+          attempts?: number
+          code_hash?: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          phone?: string
+          purpose?: Database["public"]["Enums"]["otp_purpose"]
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount_bdt: number
@@ -2111,6 +2144,7 @@ export type Database = {
         Args: { lid: string; uid: string }
         Returns: boolean
       }
+      cleanup_expired_otp_codes: { Args: never; Returns: undefined }
       cleanup_stale_sessions: { Args: never; Returns: number }
       generate_certificate_number: { Args: never; Returns: string }
       grant_access_for_payment: {
@@ -2135,6 +2169,7 @@ export type Database = {
       enrollment_status: "active" | "revoked"
       lead_source: "organic" | "facebook" | "referral" | "webinar" | "other"
       lesson_type: "video" | "image" | "text" | "resource"
+      otp_purpose: "login"
       payment_gateway: "bkash" | "manual" | "free"
       payment_status:
         | "pending"
