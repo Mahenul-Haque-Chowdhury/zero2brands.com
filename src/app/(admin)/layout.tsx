@@ -19,18 +19,18 @@ import { Button } from "@/components/ui/button";
 import { Wordmark } from "@/components/shared/wordmark";
 
 const NAV_ITEMS = [
-  { href: "/admin", label: "Overview", icon: LayoutDashboard },
-  { href: "/admin/courses", label: "Courses", icon: BookOpen },
-  { href: "/admin/lessons", label: "Lessons", icon: FileVideo },
-  { href: "/admin/batches", label: "Batches", icon: Users2 },
-  { href: "/admin/students", label: "Students", icon: GraduationCap },
-  { href: "/admin/payments", label: "Payments", icon: CreditCard },
-  { href: "/admin/reports", label: "Reports", icon: BarChart3 },
-  { href: "/admin/leads", label: "Leads", icon: UserPlus },
-  { href: "/admin/store-requests", label: "Store requests", icon: Store },
-  { href: "/admin/coupons", label: "Coupons", icon: Tag },
-  { href: "/admin/blog", label: "Blog", icon: Newspaper },
-  { href: "/admin/settings", label: "Settings", icon: Settings },
+  { href: "/management", label: "Overview", icon: LayoutDashboard },
+  { href: "/management/courses", label: "Courses", icon: BookOpen },
+  { href: "/management/lessons", label: "Lessons", icon: FileVideo },
+  { href: "/management/batches", label: "Batches", icon: Users2 },
+  { href: "/management/students", label: "Students", icon: GraduationCap },
+  { href: "/management/payments", label: "Payments", icon: CreditCard },
+  { href: "/management/reports", label: "Reports", icon: BarChart3 },
+  { href: "/management/leads", label: "Leads", icon: UserPlus },
+  { href: "/management/store-requests", label: "Store requests", icon: Store },
+  { href: "/management/coupons", label: "Coupons", icon: Tag },
+  { href: "/management/blog", label: "Blog", icon: Newspaper },
+  { href: "/management/settings", label: "Settings", icon: Settings },
 ];
 
 export default async function AdminLayout({
@@ -44,7 +44,7 @@ export default async function AdminLayout({
     <div className="flex min-h-screen bg-secondary/30 text-[0.8125rem]">
       <aside className="hidden w-52 shrink-0 flex-col border-r border-border bg-sidebar text-sidebar-foreground md:flex">
         <Link
-          href="/admin"
+          href="/management"
           className="flex h-14 items-center gap-2 border-b border-sidebar-border px-4"
           aria-label="Zero2Brands admin home"
         >

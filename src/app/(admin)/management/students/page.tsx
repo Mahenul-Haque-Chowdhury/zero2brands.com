@@ -78,7 +78,7 @@ export default async function AdminStudentsPage({
               <TableRow key={s.id}>
                 <TableCell>
                   <Link
-                    href={`/admin/students/${s.id}`}
+                    href={`/management/students/${s.id}`}
                     className="font-medium text-primary hover:underline"
                   >
                     {s.full_name ?? "Unnamed"}

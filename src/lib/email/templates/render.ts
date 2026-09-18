@@ -38,7 +38,7 @@ export async function renderEmailTemplate(
       break;
 
     case "welcome_verification":
-      subject = "Welcome to Zero2Brands — verify your email";
+      subject = "Welcome to Zero2Brands, verify your email";
       element = GenericNoticeEmail({
         heading: "Welcome to Zero2Brands",
         fullName: str("fullName"),
@@ -149,8 +149,8 @@ export async function renderEmailTemplate(
       element = GenericNoticeEmail({
         heading: "New store request",
         lines: [`${str("fullName")} · ${str("phone")}`],
-        ctaLabel: "View in admin",
-        ctaUrl: `${SITE_URL}/admin/store-requests`,
+        ctaLabel: "View in management",
+        ctaUrl: `${SITE_URL}/management/store-requests`,
       });
       break;
 
@@ -168,7 +168,7 @@ export async function renderEmailTemplate(
       break;
 
     case "admin_weekly_summary":
-      subject = "Zero2Brands — weekly summary";
+      subject = "Zero2Brands weekly summary";
       element = GenericNoticeEmail({
         heading: "Weekly summary",
         lines: [
@@ -176,8 +176,8 @@ export async function renderEmailTemplate(
           `New course enrollments: ${num("newEnrollments")}`,
           `New batch enrollments: ${num("newBatchEnrollments")}`,
         ],
-        ctaLabel: "Open admin dashboard",
-        ctaUrl: `${SITE_URL}/admin`,
+        ctaLabel: "Open management dashboard",
+        ctaUrl: `${SITE_URL}/management`,
       });
       break;
 

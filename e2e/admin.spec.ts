@@ -4,10 +4,10 @@ test.describe("admin panel", () => {
   test.skip(true, "requires a seeded admin test user");
 
   test("admin can grant manual access to a student", async ({ page }) => {
-    // Log in as a seeded admin, navigate to /admin/payments, open the
+    // Log in as a seeded admin, navigate to /management/payments, open the
     // manual payment dialog, submit valid student/product IDs, and assert
     // a success toast plus a new payments row with gateway='manual'.
-    await page.goto("/admin/payments");
+    await page.goto("/management/payments");
     await page.getByRole("button", { name: /record manual payment/i }).click();
   });
 

@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
       // /dashboard covers the student directory and public profiles too —
       // student data must never be indexed. Disallowing the parent path is
       // deliberate and correct, not an oversight.
-      disallow: ["/dashboard", "/admin", "/api", "/auth"],
+      disallow: ["/dashboard", "/management", "/api", "/auth"],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

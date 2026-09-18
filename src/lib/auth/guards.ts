@@ -79,7 +79,7 @@ export async function requireStaff() {
 export async function requireSuperadmin() {
   const { user, profile, supabase } = await requireUser();
   if (!profile || profile.role !== "superadmin") {
-    redirect("/admin");
+    redirect("/management");
   }
   return { user, profile, supabase };
 }

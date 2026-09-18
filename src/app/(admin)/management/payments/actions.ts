@@ -27,7 +27,7 @@ export async function createManualPaymentAction(formData: FormData) {
     actorId: user.id,
   });
 
-  revalidatePath("/admin/payments");
+  revalidatePath("/management/payments");
   return result;
 }
 
@@ -37,7 +37,7 @@ export async function refundPaymentAction(formData: FormData) {
   const reason = String(formData.get("reason") ?? "");
 
   const result = await processRefund({ paymentId, reason, actorId: user.id });
-  revalidatePath("/admin/payments");
+  revalidatePath("/management/payments");
   return result;
 }
 
@@ -47,6 +47,6 @@ export async function revokeAccessAction(formData: FormData) {
   const reason = String(formData.get("reason") ?? "terms_violation");
 
   await revokeAccessWithoutRefund({ paymentId, reason, actorId: user.id });
-  revalidatePath("/admin/payments");
+  revalidatePath("/management/payments");
   return { success: true };
 }

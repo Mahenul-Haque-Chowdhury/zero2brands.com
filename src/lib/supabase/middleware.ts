@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "@/types/database";
 
 const PROTECTED_DASHBOARD_PREFIX = "/dashboard";
-const PROTECTED_ADMIN_PREFIX = "/admin";
+const PROTECTED_ADMIN_PREFIX = "/management";
 const AUTH_PAGES = ["/login", "/signup"];
 const LAST_SEEN_UPDATE_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
 

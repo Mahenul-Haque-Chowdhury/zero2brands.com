@@ -23,7 +23,7 @@ export async function banStudentAction(formData: FormData) {
     after: { reason },
   });
 
-  revalidatePath(`/admin/students/${studentId}`);
+  revalidatePath(`/management/students/${studentId}`);
 }
 
 export async function unbanStudentAction(formData: FormData) {
@@ -43,7 +43,7 @@ export async function unbanStudentAction(formData: FormData) {
     entity_id: studentId,
   });
 
-  revalidatePath(`/admin/students/${studentId}`);
+  revalidatePath(`/management/students/${studentId}`);
 }
 
 export async function signOutAllDevicesAction(formData: FormData) {
@@ -60,7 +60,7 @@ export async function signOutAllDevicesAction(formData: FormData) {
     entity_id: studentId,
   });
 
-  revalidatePath(`/admin/students/${studentId}`);
+  revalidatePath(`/management/students/${studentId}`);
 }
 
 export async function grantCourseAccessAction(formData: FormData) {
@@ -81,7 +81,7 @@ export async function grantCourseAccessAction(formData: FormData) {
     after: { studentId, courseId },
   });
 
-  revalidatePath(`/admin/students/${studentId}`);
+  revalidatePath(`/management/students/${studentId}`);
 }
 
 export async function revokeCourseAccessAction(formData: FormData) {
@@ -108,5 +108,5 @@ export async function revokeCourseAccessAction(formData: FormData) {
     after: { studentId, courseId, reason },
   });
 
-  revalidatePath(`/admin/students/${studentId}`);
+  revalidatePath(`/management/students/${studentId}`);
 }

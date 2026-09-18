@@ -42,7 +42,7 @@ export default async function AdminReportsPage() {
           </p>
         </div>
         <Link
-          href="/admin/reports/watchlist"
+          href="/management/reports/watchlist"
           className="text-sm font-medium text-primary hover:underline"
         >
           Abuse watchlist
