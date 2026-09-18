@@ -65,7 +65,8 @@ export async function submitLeadAction(
 
     void queueEmail({
       template: "store_request_internal",
-      to: "support@zero2brands.com",
+      // GrayVally leads go to GrayVally, not to Zero2Brands support.
+      to: "contact@grayvally.tech",
       // Reply goes to the submitter, not back to support.
       replyTo: parsed.data.email || undefined,
       data: {
