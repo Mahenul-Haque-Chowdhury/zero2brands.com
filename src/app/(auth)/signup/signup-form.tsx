@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { Loader2 } from "lucide-react";
 import { signupAction } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,15 +47,24 @@ export function SignupForm() {
             />
           </div>
           {state && "error" in state ? (
-            <p className="text-sm text-destructive">{state.error}</p>
+            <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              {state.error}
+            </p>
           ) : null}
           <Button type="submit" disabled={pending} className="w-full">
-            {pending ? "Creating account…" : "Create account"}
+            {pending ? (
+              <>
+                <Loader2 className="size-4 animate-spin" />
+                Creating account
+              </>
+            ) : (
+              "Create account"
+            )}
           </Button>
         </form>
-        <div className="my-4 flex items-center gap-2">
+        <div className="my-5 flex items-center gap-3">
           <div className="h-px flex-1 bg-border" />
-          <span className="text-xs text-muted-foreground">OR</span>
+          <span className="text-xs font-medium text-muted-foreground">OR</span>
           <div className="h-px flex-1 bg-border" />
         </div>
         <GoogleSignInButton />

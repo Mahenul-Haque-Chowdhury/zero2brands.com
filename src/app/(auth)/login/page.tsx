@@ -9,7 +9,7 @@ export default function LoginPage() {
     <div className="flex flex-col gap-6">
       <div className="text-center">
         <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-1.5 text-sm text-muted-foreground">
           Log in to continue your course.
         </p>
       </div>
@@ -18,7 +18,10 @@ export default function LoginPage() {
       </Suspense>
       <p className="text-center text-sm text-muted-foreground">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="font-medium text-foreground underline">
+        <Link
+          href="/signup"
+          className="font-medium text-foreground underline underline-offset-4 transition-colors hover:text-primary"
+        >
           Sign up
         </Link>
       </p>

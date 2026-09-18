@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { Loader2 } from "lucide-react";
 import { resetPasswordAction } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,10 @@ export default function ResetPasswordPage() {
         <h1 className="text-2xl font-semibold tracking-tight">
           Choose a new password
         </h1>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          Use at least 8 characters. You&apos;ll be signed in with this
+          password next time.
+        </p>
       </div>
       <Card>
         <CardContent className="pt-6">
@@ -31,6 +36,7 @@ export default function ResetPasswordPage() {
                 type="password"
                 minLength={8}
                 required
+                autoComplete="new-password"
               />
             </div>
             <div className="grid gap-2">
@@ -41,13 +47,23 @@ export default function ResetPasswordPage() {
                 type="password"
                 minLength={8}
                 required
+                autoComplete="new-password"
               />
             </div>
             {state && "error" in state ? (
-              <p className="text-sm text-destructive">{state.error}</p>
+              <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                {state.error}
+              </p>
             ) : null}
             <Button type="submit" disabled={pending} className="w-full">
-              {pending ? "Saving…" : "Save new password"}
+              {pending ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Saving
+                </>
+              ) : (
+                "Save new password"
+              )}
             </Button>
           </form>
         </CardContent>

@@ -10,14 +10,17 @@ export default function SignupPage() {
         <h1 className="text-2xl font-semibold tracking-tight">
           Create your account
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-1.5 text-sm text-muted-foreground">
           Start your journey with Zero2Brands.
         </p>
       </div>
       <SignupForm />
       <p className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-foreground underline">
+        <Link
+          href="/login"
+          className="font-medium text-foreground underline underline-offset-4 transition-colors hover:text-primary"
+        >
           Log in
         </Link>
       </p>

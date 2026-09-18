@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { fireMetaPixelEvent } from "@/lib/analytics/meta-pixel";
@@ -21,17 +22,23 @@ export function GrayVallyCta() {
   }
 
   return (
-    <Card className="border-primary/30 bg-primary/5">
+    <Card className="border-accent/30 bg-accent/5">
       <CardContent className="flex flex-col items-start gap-3 pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="font-medium">Ready to launch?</p>
-          <p className="text-sm text-muted-foreground">
-            Let our partner GrayVally build your store.
-          </p>
+        <div className="flex items-start gap-3">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
+            <Rocket className="size-4" />
+          </span>
+          <div>
+            <p className="font-medium">Ready to launch?</p>
+            <p className="text-sm text-muted-foreground">
+              Let our partner GrayVally build your store.
+            </p>
+          </div>
         </div>
         <Button
           size="sm"
           onClick={handleClick}
+          className="w-full sm:w-auto"
           render={<Link href="/dashboard/store-request">Get started</Link>}
         />
       </CardContent>

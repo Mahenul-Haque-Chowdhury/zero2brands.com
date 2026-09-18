@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { Loader2 } from "lucide-react";
 import { completeOnboardingAction } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,7 +34,7 @@ export default function OnboardingPage() {
         <h1 className="text-2xl font-semibold tracking-tight">
           A few more details
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-1.5 text-sm text-muted-foreground">
           We need your phone number to run your enrollment and support.
         </p>
       </div>
@@ -105,10 +106,19 @@ export default function OnboardingPage() {
               </p>
             </div>
             {state && "error" in state ? (
-              <p className="text-sm text-destructive">{state.error}</p>
+              <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                {state.error}
+              </p>
             ) : null}
             <Button type="submit" disabled={pending} className="w-full">
-              {pending ? "Saving…" : "Continue to dashboard"}
+              {pending ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Saving
+                </>
+              ) : (
+                "Continue to dashboard"
+              )}
             </Button>
           </form>
         </CardContent>
