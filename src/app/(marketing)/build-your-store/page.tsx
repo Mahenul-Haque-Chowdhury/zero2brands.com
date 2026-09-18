@@ -154,35 +154,38 @@ export default function BuildYourStorePage() {
 
             {/* Right: form and contact */}
             <Reveal delay={0.12} className="scroll-mt-24">
-              <div className="rounded-2xl border border-white/12 bg-white/4 p-6 backdrop-blur-sm sm:p-8">
-                <h2 className="text-xl font-semibold text-white">
+              <div className="rounded-2xl bg-card p-6 shadow-2xl ring-1 ring-black/5 sm:p-8">
+                <h2 className="text-xl font-semibold text-foreground">
                   Tell GrayVally about your brand
                 </h2>
-                <p className="mt-2 text-sm leading-relaxed text-white/65">
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   Send a few details and the team will reach out, usually
                   within one to two business days.
                 </p>
-                <div className="mt-6 [&_label]:text-white/80">
+                <div className="mt-6">
                   <LeadForm source="build_your_store" />
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/3 p-6 text-sm">
+              {/* Sits directly under the white card, so it stays on the navy
+                  surface but is indented to read as part of the same column
+                  rather than a second competing panel. */}
+              <div className="mt-6 flex flex-col gap-3 px-1 text-sm sm:px-2">
                 <a
                   href="mailto:contact@grayvally.tech"
-                  className="flex items-center gap-3 text-white/75 transition-colors hover:text-white"
+                  className="flex items-center gap-3 text-white/70 transition-colors hover:text-white"
                 >
                   <Mail className="size-4 shrink-0 text-accent" />
                   contact@grayvally.tech
                 </a>
                 <a
                   href="tel:+8801608613747"
-                  className="flex items-center gap-3 text-white/75 transition-colors hover:text-white"
+                  className="flex items-center gap-3 text-white/70 transition-colors hover:text-white"
                 >
                   <Phone className="size-4 shrink-0 text-accent" />
                   +880 1608-613747
                 </a>
-                <p className="flex items-start gap-3 text-white/75">
+                <p className="flex items-start gap-3 text-white/70">
                   <MapPin className="mt-0.5 size-4 shrink-0 text-accent" />
                   House 629-630, Road 5, Block G, Bashundhara RA, Dhaka 1229
                 </p>

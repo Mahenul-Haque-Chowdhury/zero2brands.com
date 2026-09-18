@@ -43,7 +43,7 @@ export default async function AdminStoreRequestsPage() {
   const { supabase } = await requireAdmin();
   const { data: requests } = await supabase
     .from("store_requests")
-    .select("id, full_name, phone, business_name, status, created_at")
+    .select("id, full_name, phone, business_name, product_category, status, created_at")
     .order("created_at", { ascending: false });
 
   const rows = requests ?? [];
@@ -61,6 +61,7 @@ export default async function AdminStoreRequestsPage() {
             <TableRow className="hover:bg-transparent">
               <Th>Name</Th>
               <Th>Business</Th>
+              <Th>Project type</Th>
               <Th>Phone</Th>
               <Th>Status</Th>
             </TableRow>
@@ -74,13 +75,16 @@ export default async function AdminStoreRequestsPage() {
                 <TableCell className="max-w-48 truncate text-muted-foreground" title={r.business_name ?? undefined}>
                   {r.business_name ?? "-"}
                 </TableCell>
+                <TableCell className="max-w-44 truncate text-muted-foreground" title={r.product_category ?? undefined}>
+                  {r.product_category ?? "-"}
+                </TableCell>
                 <TableCell className="text-muted-foreground">{r.phone}</TableCell>
                 <TableCell>{statusBadge(r.status)}</TableCell>
               </TableRow>
             ))}
             {rows.length === 0 && (
               <TableRow className="hover:bg-transparent">
-                <TableCell colSpan={4} className="p-0">
+                <TableCell colSpan={5} className="p-0">
                   <EmptyState
                     icon={Store}
                     title="No store requests yet"

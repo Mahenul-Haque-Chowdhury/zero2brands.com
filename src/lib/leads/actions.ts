@@ -11,6 +11,8 @@ const leadSchema = z.object({
   fullName: z.string().trim().min(2).max(120),
   phone: z.string().trim(),
   email: z.string().trim().email().optional().or(z.literal("")),
+  businessName: z.string().trim().max(200).optional(),
+  projectType: z.string().trim().max(100).optional(),
   message: z.string().trim().max(2000).optional(),
   source: z.string().trim().max(50),
 });
@@ -33,6 +35,8 @@ export async function submitLeadAction(
     fullName: formData.get("fullName"),
     phone: formData.get("phone"),
     email: formData.get("email"),
+    businessName: formData.get("businessName"),
+    projectType: formData.get("projectType"),
     message: formData.get("message"),
     source: formData.get("source"),
   });
@@ -53,6 +57,8 @@ export async function submitLeadAction(
       full_name: parsed.data.fullName,
       phone: normalizedPhone,
       email: parsed.data.email || null,
+      business_name: parsed.data.businessName || null,
+      product_category: parsed.data.projectType || null,
       message: parsed.data.message || null,
       source: parsed.data.source,
     });
