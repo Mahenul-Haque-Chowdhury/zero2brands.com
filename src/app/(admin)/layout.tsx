@@ -57,7 +57,7 @@ export default async function AdminLayout({
               key={item.href}
               href={item.href}
               label={item.label}
-              icon={item.icon}
+              icon={<item.icon />}
             />
           ))}
         </nav>

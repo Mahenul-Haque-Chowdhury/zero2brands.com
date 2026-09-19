@@ -1,9 +1,9 @@
 "use client";
 
+import { cloneElement } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "cn";
-import type { LucideIcon } from "lucide-react";
 
 /**
  * Admin sidebar nav item with a current-page state.
@@ -12,15 +12,21 @@ import type { LucideIcon } from "lucide-react";
  * check lives in this small client leaf rather than pushing the whole
  * layout client-side. `/management` is matched exactly so it does not stay
  * highlighted on every nested route.
+ *
+ * `icon` is a pre-rendered element (`<LayoutDashboard />`), not a component
+ * reference. A lucide icon *component* can't cross the server-to-client
+ * boundary as a prop (only serializable data and already-rendered elements
+ * can), so the server layout renders the icon and hands this a finished
+ * node to re-style with the active-state classes.
  */
 export function AdminNavLink({
   href,
   label,
-  icon: Icon,
+  icon,
 }: {
   href: string;
   label: string;
-  icon: LucideIcon;
+  icon: React.ReactElement<{ className?: string }>;
 }) {
   const pathname = usePathname();
   const active =
@@ -47,12 +53,12 @@ export function AdminNavLink({
           active ? "h-4 opacity-100" : "h-0 opacity-0"
         )}
       />
-      <Icon
-        className={cn(
+      {cloneElement(icon, {
+        className: cn(
           "size-3.5 shrink-0 transition-colors duration-150",
           active ? "text-accent" : "text-sidebar-foreground/50"
-        )}
-      />
+        ),
+      })}
       {label}
     </Link>
   );
