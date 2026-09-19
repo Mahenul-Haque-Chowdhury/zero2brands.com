@@ -1,6 +1,7 @@
 import { getCurrentUserAndProfile } from "@/lib/auth/guards";
 import { SiteHeader } from "@/components/marketing/site-header";
 import { SiteFooter } from "@/components/marketing/site-footer";
+import { WhatsAppButton } from "@/components/marketing/whatsapp-button";
 
 /**
  * Resolves the session here rather than inside SiteHeader: the header is a
@@ -20,6 +21,7 @@ export default async function MarketingLayout({
       <SiteHeader isAuthenticated={Boolean(user)} />
       <div className="flex-1">{children}</div>
       <SiteFooter />
+      <WhatsAppButton />
     </div>
   );
 }
