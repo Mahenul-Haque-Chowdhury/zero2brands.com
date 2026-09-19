@@ -167,6 +167,23 @@ export async function renderEmailTemplate(
       break;
     }
 
+    case "contact_inquiry": {
+      const detail: string[] = [
+        `Name: ${str("fullName")}`,
+        `Phone: ${str("phone")}`,
+      ];
+      if (str("email")) detail.push(`Email: ${str("email")}`);
+      if (str("queryType")) detail.push(`Query type: ${str("queryType")}`);
+      if (str("message")) detail.push(`Message: ${str("message")}`);
+
+      subject = `New contact enquiry: ${str("fullName")}`;
+      element = GenericNoticeEmail({
+        heading: "New contact enquiry",
+        lines: detail,
+      });
+      break;
+    }
+
     case "device_signed_out":
       subject = "A device was signed out of your account";
       element = GenericNoticeEmail({

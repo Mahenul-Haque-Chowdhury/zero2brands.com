@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Mail, MapPin } from "lucide-react";
-import { LeadForm } from "@/components/marketing/lead-form";
+import { ContactForm } from "@/components/marketing/contact-form";
 import { Reveal } from "@/components/motion/reveal";
 
 export const metadata: Metadata = { title: "Contact" };
@@ -33,7 +33,7 @@ export default function ContactPage() {
 
       <Reveal delay={0.1}>
         <div className="mt-10 rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
-          <LeadForm source="contact" />
+          <ContactForm />
         </div>
       </Reveal>
     </div>

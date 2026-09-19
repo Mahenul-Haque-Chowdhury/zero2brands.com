@@ -24,6 +24,7 @@ export type EmailTemplate =
   | "refund_processed"
   | "store_request_received"
   | "store_request_internal"
+  | "contact_inquiry"
   | "device_signed_out"
   | "admin_weekly_summary";
 

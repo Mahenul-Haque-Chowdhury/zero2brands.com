@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -924,7 +929,9 @@ export type Database = {
           email: string | null
           full_name: string | null
           id: string
+          message: string | null
           phone: string | null
+          query_type: string | null
           source: Database["public"]["Enums"]["lead_source"] | null
           utm_campaign: string | null
           utm_content: string | null
@@ -938,7 +945,9 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
+          message?: string | null
           phone?: string | null
+          query_type?: string | null
           source?: Database["public"]["Enums"]["lead_source"] | null
           utm_campaign?: string | null
           utm_content?: string | null
@@ -952,7 +961,9 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
+          message?: string | null
           phone?: string | null
+          query_type?: string | null
           source?: Database["public"]["Enums"]["lead_source"] | null
           utm_campaign?: string | null
           utm_content?: string | null
@@ -2327,6 +2338,7 @@ export const Constants = {
       enrollment_status: ["active", "revoked"],
       lead_source: ["organic", "facebook", "referral", "webinar", "other"],
       lesson_type: ["video", "image", "text", "resource"],
+      otp_purpose: ["login"],
       payment_gateway: ["bkash", "manual", "free"],
       payment_status: [
         "pending",
@@ -2349,4 +2361,3 @@ export const Constants = {
     },
   },
 } as const
-

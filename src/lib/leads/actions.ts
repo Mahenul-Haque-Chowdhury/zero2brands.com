@@ -13,6 +13,7 @@ const leadSchema = z.object({
   email: z.string().trim().email().optional().or(z.literal("")),
   businessName: z.string().trim().max(200).optional(),
   projectType: z.string().trim().max(100).optional(),
+  queryType: z.string().trim().max(100).optional(),
   message: z.string().trim().max(2000).optional(),
   source: z.string().trim().max(50),
 });
@@ -37,6 +38,7 @@ export async function submitLeadAction(
     email: formData.get("email"),
     businessName: formData.get("businessName"),
     projectType: formData.get("projectType"),
+    queryType: formData.get("queryType"),
     message: formData.get("message"),
     source: formData.get("source"),
   });
@@ -88,8 +90,24 @@ export async function submitLeadAction(
       full_name: parsed.data.fullName,
       phone: normalizedPhone,
       email: parsed.data.email || null,
+      query_type: parsed.data.queryType || null,
+      message: parsed.data.message || null,
       source: "organic",
     });
+
+    void queueEmail({
+      template: "contact_inquiry",
+      to: "zero2brandz@gmail.com",
+      // Reply goes to the person who wrote in, not back to this inbox.
+      replyTo: parsed.data.email || undefined,
+      data: {
+        fullName: parsed.data.fullName,
+        phone: normalizedPhone,
+        email: parsed.data.email || "",
+        queryType: parsed.data.queryType || "",
+        message: parsed.data.message || "",
+      },
+    }).catch(() => {});
   }
 
   return { success: true };
