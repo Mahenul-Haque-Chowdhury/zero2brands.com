@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   ArrowUpRight,
   Layers,
@@ -66,7 +67,16 @@ export default function BuildYourStorePage() {
             {/* Left: pitch */}
             <div>
               <Reveal>
-                <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium tracking-wide text-white/80 uppercase">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 py-1.5 pl-1.5 pr-4 text-xs font-medium tracking-wide text-white/80 uppercase">
+                  <span className="flex size-6 items-center justify-center rounded-full bg-white p-1">
+                    <Image
+                      src="/grayvally-icon.png"
+                      alt=""
+                      width={64}
+                      height={64}
+                      className="size-full object-contain"
+                    />
+                  </span>
                   In partnership with
                   <GrayVallyWordmark className="text-sm normal-case tracking-normal text-white" />
                 </span>
