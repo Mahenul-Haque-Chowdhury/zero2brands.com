@@ -13,7 +13,9 @@ const NAV = [
   { href: "/batches", label: "Batches" },
   { href: "/build-your-store", label: "Build Your Store" },
   { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function SiteHeader({
